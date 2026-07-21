@@ -68,3 +68,14 @@ body.dark {
 .avatar-hover-scale:hover {
   transform: scale(1.15);
 }
+
+/* Landing title shimmer */
+@keyframes shimmer-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.landing-title {
+  animation: shimmer-gradient 6s ease-in-out infinite;
+}

@@ -97,7 +97,7 @@ my-portfolio/
     ├── public/
     │   └── assets/
     │       ├── me/          # Avatar/profile pictures
-    │       ├── memoji/      # Conversational Memoji state assets
+    │       ├── pfp/         # Profile & avatar picture assets
     │       └── screenshots/ # Place screenshots here to embed in README
     ├── src/
     │   ├── components/      # UI components (FluidCursor, ExperienceTimeline, etc.)

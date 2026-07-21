@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import confetti from 'canvas-confetti';
 import { ArrowRight, Info, Briefcase, Code2, UserPlus, User, FileText, X, ChevronLeft, ChevronRight, Sun, Moon, Film, Trophy, Dumbbell, Shield, Heart } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, type MotionValue, useAnimationFrame, animate } from 'framer-motion';
 import { ReactLenis } from 'lenis/react';
@@ -259,8 +260,8 @@ export default function App() {
   return (
     <ReactLenis root>
       <div className={`min-h-screen relative flex flex-col font-sans transition-colors duration-500 ${theme === 'dark'
-          ? 'bg-black text-slate-100'
-          : viewState === 'chat' ? 'bg-white text-slate-800' : 'bg-[#FDFDFD] text-slate-800'
+        ? 'bg-black text-slate-100'
+        : viewState === 'chat' ? 'bg-white text-slate-800' : 'bg-[#FDFDFD] text-slate-800'
         }`}>
 
         <AnimatePresence>
@@ -283,8 +284,8 @@ export default function App() {
               <motion.div
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                 className={`absolute top-0 left-0 right-0 h-40 -z-10 pointer-events-none transition-colors duration-500 ${theme === 'dark'
-                    ? 'bg-gradient-to-b from-black via-black/95 to-transparent'
-                    : 'bg-gradient-to-b from-white via-white/95 to-transparent'
+                  ? 'bg-gradient-to-b from-black via-black/95 to-transparent'
+                  : 'bg-gradient-to-b from-white via-white/95 to-transparent'
                   }`}
               />
             )}
@@ -298,8 +299,8 @@ export default function App() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`inline-flex items-center gap-2 backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.05)] px-5 py-2.5 rounded-full text-sm font-medium transition-all pointer-events-auto ${theme === 'dark'
-                      ? 'bg-zinc-900/30 border-zinc-800/50 hover:bg-zinc-800/50 text-zinc-300'
-                      : 'bg-white/30 border-white/50 hover:bg-white/50 text-slate-700'
+                    ? 'bg-zinc-900/30 border-zinc-800/50 hover:bg-zinc-800/50 text-zinc-300'
+                    : 'bg-white/30 border-white/50 hover:bg-white/50 text-slate-700'
                     }`}
                 >
                   <div className="w-6 h-6 bg-zinc-800 rounded-full flex items-center justify-center shadow-inner">
@@ -331,8 +332,8 @@ export default function App() {
             <button
               onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
               className={`p-2.5 rounded-full transition-colors border border-transparent backdrop-blur-xl cursor-pointer ${theme === 'dark'
-                  ? 'hover:bg-white/5 hover:border-zinc-800 text-amber-400'
-                  : 'hover:bg-black/5 hover:border-slate-200 text-slate-655'
+                ? 'hover:bg-white/5 hover:border-zinc-800 text-amber-400'
+                : 'hover:bg-black/5 hover:border-slate-200 text-slate-655'
                 }`}
             >
               {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
@@ -340,8 +341,8 @@ export default function App() {
             <button
               onClick={() => setIsModalOpen(true)}
               className={`p-2.5 rounded-full transition-colors border border-transparent backdrop-blur-xl cursor-pointer ${theme === 'dark'
-                  ? 'hover:bg-white/5 hover:border-zinc-800 text-zinc-400'
-                  : 'hover:bg-black/5 hover:border-slate-200 text-slate-600'
+                ? 'hover:bg-white/5 hover:border-zinc-800 text-zinc-400'
+                : 'hover:bg-black/5 hover:border-slate-200 text-slate-600'
                 }`}
             >
               <Info className="w-5 h-5" />
@@ -386,6 +387,7 @@ export default function App() {
 
 function LandingView({ onQuery, theme }: { onQuery: (q: string, t: ChatMessage['type']) => void, theme?: string }) {
   const [input, setInput] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
   const dynamicPlaceholder = useTypewriterPlaceholder([
     "Ask me anything...",
     "Ask me about Maester...",
@@ -401,70 +403,155 @@ function LandingView({ onQuery, theme }: { onQuery: (q: string, t: ChatMessage['
     onQuery(input, 'general');
   };
 
+  const prompts = [
+    { icon: <User className="w-4 h-4" />, label: "Me", query: "Tell me about yourself.", type: 'me' as const, color: "text-teal-400" },
+    { icon: <Briefcase className="w-4 h-4" />, label: "Projects", query: "Show me your projects.", type: 'projects' as const, color: "text-emerald-400" },
+    { icon: <FileText className="w-4 h-4" />, label: "Experience", query: "Tell me about your work experience.", type: 'resume' as const, color: "text-violet-400" },
+    { icon: <Code2 className="w-4 h-4" />, label: "Skills", query: "What are your skills?", type: 'skills' as const, color: "text-indigo-400" },
+    { icon: <Heart className="w-4 h-4" />, label: "Hobbies", query: "What do you do beyond code?", type: 'hobbies' as const, color: "text-rose-400" },
+    { icon: <UserPlus className="w-4 h-4" />, label: "Contact", query: "How can I contact you?", type: 'general' as const, color: "text-amber-400" },
+  ];
+
   return (
     <>
       <FluidCursor />
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
-        transition={{ duration: 0.4 }}
-        className="flex flex-col items-center justify-center w-full max-w-3xl mt-24 md:mt-32 px-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0, y: -30, filter: 'blur(12px)' }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="flex flex-col items-center justify-center w-full max-w-3xl min-h-[calc(100vh-6rem)] px-4 pb-8"
       >
-        <div className="text-center mb-6">
-          <h2 className={`text-2xl sm:text-3xl font-serif italic mb-3 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-700'}`}>Hey, I'm Udayjot 👋</h2>
-          <h1 className={`text-5xl sm:text-7xl md:text-8xl font-serif font-bold tracking-tight transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-100' : 'text-slate-900'}`}>AI Engineer</h1>
-        </div>
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className={`text-lg sm:text-xl font-serif italic mb-4 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-400' : 'text-slate-500'}`}
+        >
+          Hey, I'm Udayjot 👋
+        </motion.p>
 
-        <motion.div className="w-24 h-24 mb-8 flex items-center justify-center text-5xl">
-          <MemojiAvatar type="landing" className="w-full h-full" />
+        {/* Main Title with shimmer */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 0.35, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className={`text-6xl sm:text-8xl md:text-9xl font-serif font-bold tracking-tight mb-2 text-center leading-tight pb-1 ${theme === 'dark' ? 'landing-title' : 'text-slate-900'}`}
+          style={theme === 'dark' ? {
+            background: 'linear-gradient(135deg, #e4e4e7 0%, #a1a1aa 40%, #e4e4e7 60%, #71717a 100%)',
+            backgroundSize: '200% 200%',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          } : undefined}
+        >
+          AI Engineer
+        </motion.h1>
+
+
+        {/* Avatar with glow ring */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5, duration: 0.7, type: "spring", stiffness: 200, damping: 20 }}
+          className="relative mb-10"
+        >
+          <div className={`absolute -inset-2 rounded-full blur-xl opacity-40 animate-pulse ${theme === 'dark' ? 'bg-blue-500/30' : 'bg-blue-400/20'}`} />
+          <div className={`relative w-28 h-28 sm:w-32 sm:h-32 rounded-full p-[2px] ${theme === 'dark'
+            ? 'bg-gradient-to-br from-zinc-600 via-zinc-800 to-zinc-600'
+            : 'bg-gradient-to-br from-slate-300 via-slate-100 to-slate-300'
+            }`}>
+            <div className={`w-full h-full rounded-full overflow-hidden flex items-center justify-center ${theme === 'dark' ? 'bg-black' : 'bg-[#FDFDFD]'}`}>
+              <MemojiAvatar type="landing" className="w-full h-full" />
+            </div>
+          </div>
         </motion.div>
 
-        <div className="w-full relative max-w-xl mb-10">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-            placeholder={dynamicPlaceholder}
-            className={`w-full backdrop-blur-2xl border shadow-[0_8px_32px_rgba(0,0,0,0.06)] rounded-full py-4 pl-6 pr-14 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all placeholder:text-slate-500 ${theme === 'dark'
-                ? 'bg-zinc-900/40 border-zinc-800/60 text-zinc-100'
-                : 'bg-white/40 border-white/60 text-slate-855'
-              }`}
-          />
-          <button
-            onClick={handleSubmit}
-            className="absolute right-2 top-2 bottom-2 aspect-square bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center text-white transition-colors shadow-md cursor-pointer"
-          >
-            <ArrowRight className="w-5 h-5" />
-          </button>
-        </div>
+        {/* Search Input with glow effect */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.65, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full relative max-w-xl mb-10"
+        >
+          {/* Glow behind input on focus */}
+          <div className={`absolute -inset-1 rounded-full blur-xl transition-opacity duration-500 ${isFocused ? 'opacity-60' : 'opacity-0'} ${theme === 'dark' ? 'bg-blue-500/15' : 'bg-blue-400/10'}`} />
+          <div className="relative">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              placeholder={dynamicPlaceholder}
+              className={`w-full backdrop-blur-2xl border rounded-full py-4 pl-7 pr-14 text-lg focus:outline-none transition-all duration-300 placeholder:transition-colors placeholder:duration-300 ${theme === 'dark'
+                ? `bg-zinc-900/50 border-zinc-700/60 text-zinc-100 placeholder:text-zinc-500 ${isFocused ? 'border-zinc-600/80 shadow-[0_0_30px_rgba(59,130,246,0.08)]' : 'shadow-[0_8px_32px_rgba(0,0,0,0.15)]'}`
+                : `bg-white/50 border-slate-200/80 text-slate-800 placeholder:text-slate-400 ${isFocused ? 'border-slate-300 shadow-[0_0_30px_rgba(59,130,246,0.06)]' : 'shadow-[0_8px_32px_rgba(0,0,0,0.04)]'}`
+                }`}
+            />
+            <button
+              onClick={handleSubmit}
+              className={`absolute right-2 top-2 bottom-2 aspect-square rounded-full flex items-center justify-center text-white transition-all duration-300 shadow-lg cursor-pointer ${theme === 'dark'
+                ? 'bg-blue-600 hover:bg-blue-500 shadow-blue-500/20'
+                : 'bg-blue-500 hover:bg-blue-600 shadow-blue-500/25'
+                }`}
+            >
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+        </motion.div>
 
-        <div className="flex flex-wrap justify-center gap-3">
-          <LandingPrompt icon={<User className="w-5 h-5 text-teal-600" />} label="Me" onClick={() => onQuery("Tell me about yourself.", 'me')} theme={theme} />
-          <LandingPrompt icon={<Briefcase className="w-5 h-5 text-emerald-600" />} label="Projects" onClick={() => onQuery("Show me your projects.", 'projects')} theme={theme} />
-          <LandingPrompt icon={<FileText className="w-5 h-5 text-violet-600" />} label="Experience" onClick={() => onQuery("Tell me about your work experience.", 'resume')} theme={theme} />
-          <LandingPrompt icon={<Code2 className="w-5 h-5 text-indigo-600" />} label="Skills" onClick={() => onQuery("What are your skills?", 'skills')} theme={theme} />
-          <LandingPrompt icon={<Heart className="w-5 h-5 text-rose-600" />} label="Hobbies" onClick={() => onQuery("What do you do beyond code?", 'hobbies')} theme={theme} />
-          <LandingPrompt icon={<UserPlus className="w-5 h-5 text-amber-600" />} label="Contact" onClick={() => onQuery("How can I contact you?", 'general')} theme={theme} />
-        </div>
+        {/* Prompt Buttons with staggered animation */}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.06, delayChildren: 0.8 } }
+          }}
+          className="flex flex-wrap justify-center gap-2.5"
+        >
+          {prompts.map((p) => (
+            <motion.button
+              key={p.label}
+              variants={{
+                hidden: { opacity: 0, y: 12, scale: 0.9 },
+                visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }
+              }}
+              whileHover={{ scale: 1.06, y: -2, transition: { type: 'spring', stiffness: 500, damping: 25 } }}
+              whileTap={{ scale: 0.93 }}
+              onClick={(e) => {
+                const rect = (e.target as HTMLElement).getBoundingClientRect();
+                const x = (rect.left + rect.width / 2) / window.innerWidth;
+                const y = (rect.top + rect.height / 2) / window.innerHeight;
+                confetti({
+                  particleCount: 30,
+                  spread: 50,
+                  startVelocity: 15,
+                  gravity: 0.8,
+                  ticks: 40,
+                  origin: { x, y },
+                  colors: ['#60a5fa', '#a78bfa', '#34d399', '#f472b6', '#fbbf24'],
+                  scalar: 0.6,
+                  shapes: ['circle'],
+                  disableForReducedMotion: true,
+                });
+                onQuery(p.query, p.type);
+              }}
+              className={`flex items-center gap-2 backdrop-blur-xl border px-5 py-2.5 rounded-full text-sm font-medium cursor-pointer ${theme === 'dark'
+                ? 'bg-zinc-900/40 border-zinc-800/60 hover:bg-zinc-800/60 hover:border-zinc-700/60 text-zinc-300'
+                : 'bg-white/40 border-slate-200/60 hover:bg-white/70 hover:border-slate-300/60 text-slate-600'
+                }`}
+            >
+              <span className={p.color}>{p.icon}</span>
+              {p.label}
+            </motion.button>
+          ))}
+        </motion.div>
       </motion.div>
     </>
-  );
-}
-
-function LandingPrompt({ icon, label, onClick, theme }: { icon: React.ReactNode, label: string, onClick: () => void, theme?: string }) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2 backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.04)] px-6 py-3 rounded-2xl hover:scale-105 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all text-sm font-medium cursor-pointer ${theme === 'dark'
-          ? 'bg-zinc-900/30 border-zinc-800/50 hover:bg-zinc-800/50 text-zinc-350'
-          : 'bg-white/30 border-white/50 hover:bg-white/60 text-slate-700'
-        }`}
-    >
-      {icon}
-      {label}
-    </button>
   );
 }
 
@@ -588,8 +675,8 @@ function ChatView({
               {activeMessage?.ai_text ? (
                 <div className="w-full flex justify-start mb-6">
                   <div className={`px-6 py-4 rounded-2xl rounded-bl-sm shadow-sm text-[15px] max-w-[85%] leading-relaxed transition-colors duration-500 ${theme === 'dark'
-                      ? 'bg-zinc-900 text-zinc-200 border border-zinc-800/80'
-                      : 'bg-slate-100 text-slate-800 border border-slate-200/50'
+                    ? 'bg-zinc-900 text-zinc-200 border border-zinc-800/80'
+                    : 'bg-slate-100 text-slate-800 border border-slate-200/50'
                     }`}>
                     <StreamingText key={activeMessage.id} text={activeMessage.ai_text} renderText={renderChatText} />
                   </div>
@@ -634,8 +721,8 @@ function ChatView({
             onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
             placeholder={dynamicPlaceholder}
             className={`w-full backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.06)] border rounded-full py-4 pl-6 pr-14 text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all placeholder-zinc-400 ${theme === 'dark'
-                ? 'bg-zinc-900/40 border-zinc-800/60 text-zinc-100'
-                : 'bg-white/40 border-white/60 text-slate-800'
+              ? 'bg-zinc-900/40 border-zinc-800/60 text-zinc-100'
+              : 'bg-white/40 border-white/60 text-slate-800'
               }`}
           />
           <button
@@ -655,8 +742,8 @@ function ChatPrompt({ icon, label, onClick, theme }: { icon: React.ReactNode, la
     <button
       onClick={onClick}
       className={`flex items-center gap-1.5 backdrop-blur-md border shadow-sm px-4 py-2.5 rounded-full transition-colors text-[13px] font-semibold h-full whitespace-nowrap cursor-pointer ${theme === 'dark'
-          ? 'bg-zinc-900/40 border-zinc-800/60 hover:bg-zinc-800/60 text-zinc-300'
-          : 'bg-white/40 border-white/60 hover:bg-white/60 text-slate-700'
+        ? 'bg-zinc-900/40 border-zinc-800/60 hover:bg-zinc-800/60 text-zinc-300'
+        : 'bg-white/40 border-white/60 hover:bg-white/60 text-slate-700'
         }`}
     >
       {icon}
@@ -947,8 +1034,8 @@ function ProjectsCarousel({ onSelectProject, theme }: { onSelectProject: (p: Pro
         <button
           onClick={() => handleChevron('left')}
           className={`w-10 h-10 flex items-center justify-center rounded-full border transition-colors shadow-sm cursor-pointer ${theme === 'dark'
-              ? 'bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-100 border-slate-800/80'
-              : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 border-transparent'
+            ? 'bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-100 border-slate-800/80'
+            : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 border-transparent'
             }`}
         >
           <ChevronLeft className="w-5 h-5" />
@@ -956,8 +1043,8 @@ function ProjectsCarousel({ onSelectProject, theme }: { onSelectProject: (p: Pro
         <button
           onClick={() => handleChevron('right')}
           className={`w-10 h-10 flex items-center justify-center rounded-full border transition-colors shadow-sm cursor-pointer ${theme === 'dark'
-              ? 'bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-100 border-slate-800/80'
-              : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 border-transparent'
+            ? 'bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-100 border-slate-800/80'
+            : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 border-transparent'
             }`}
         >
           <ChevronRight className="w-5 h-5" />
@@ -1040,8 +1127,8 @@ function ProjectModal({ project, onClose, theme }: { project: Project | null, on
                         <div
                           key={link.label}
                           className={`flex items-center justify-between p-4 rounded-xl font-medium border transition-colors duration-500 ${theme === 'dark'
-                              ? 'bg-zinc-900/20 border-zinc-800/40 text-zinc-400'
-                              : 'bg-slate-50/50 border-slate-200/50 text-slate-500'
+                            ? 'bg-zinc-900/20 border-zinc-800/40 text-zinc-400'
+                            : 'bg-slate-50/50 border-slate-200/50 text-slate-500'
                             }`}
                         >
                           <span className="flex items-center gap-2">
@@ -1058,8 +1145,8 @@ function ProjectModal({ project, onClose, theme }: { project: Project | null, on
                         target="_blank"
                         rel="noreferrer"
                         className={`flex items-center justify-between p-4 rounded-xl transition-colors group font-medium border ${theme === 'dark'
-                            ? 'bg-zinc-900/60 hover:bg-zinc-900 border-zinc-800 text-zinc-200'
-                            : 'bg-slate-50 hover:bg-slate-100 border-slate-100 text-slate-800'
+                          ? 'bg-zinc-900/60 hover:bg-zinc-900 border-zinc-800 text-zinc-200'
+                          : 'bg-slate-50 hover:bg-slate-100 border-slate-100 text-slate-800'
                           }`}
                       >
                         {link.label}
@@ -1247,8 +1334,8 @@ function BeyondTheCode({ theme }: { theme?: string }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             className={`border rounded-3xl p-6 shadow-sm flex flex-col items-start bg-gradient-to-br ${hobby.gradient} transition-all duration-500 ${theme === 'dark'
-                ? 'border-zinc-800/80 hover:border-zinc-700/80 text-zinc-150'
-                : 'border-slate-200/60 hover:border-slate-300/60 text-slate-850'
+              ? 'border-zinc-800/80 hover:border-zinc-700/80 text-zinc-150'
+              : 'border-slate-200/60 hover:border-slate-300/60 text-slate-850'
               }`}
           >
             <div className="flex items-center gap-3 mb-3">
