@@ -22,19 +22,19 @@ interface ChatMessage {
 
 function MemojiAvatar({ type, className = "" }: { type: 'landing' | 'chat'; className?: string }) {
   const [hasError, setHasError] = useState(false);
-  
+
   const fallbackEmoji = type === 'landing' ? '🙋🏽‍♂️' : '👨🏽‍💻';
   const imgSrc = '/assets/pfp/avatar.png';
-  
+
   if (hasError) {
     return <span className={`${className} flex items-center justify-center`}>{fallbackEmoji}</span>;
   }
-  
+
   return (
     <div className={`avatar-hover-scale ${className} flex items-center justify-center`}>
-      <img 
-        src={imgSrc} 
-        alt={`${type} avatar`} 
+      <img
+        src={imgSrc}
+        alt={`${type} avatar`}
         className="w-full h-full object-contain animate-spin-slow"
         onError={() => setHasError(true)}
       />
@@ -44,21 +44,21 @@ function MemojiAvatar({ type, className = "" }: { type: 'landing' | 'chat'; clas
 
 function ProfileImage({ className = "" }: { className?: string }) {
   const [hasError, setHasError] = useState(false);
-  
+
   if (hasError) {
     return (
-      <img 
-        src="https://ui-avatars.com/api/?name=Udayjot+Singh&size=256&background=f1f5f9&color=334155" 
-        alt="Udayjot" 
-        className={className} 
+      <img
+        src="https://ui-avatars.com/api/?name=Udayjot+Singh&size=256&background=f1f5f9&color=334155"
+        alt="Udayjot"
+        className={className}
       />
     );
   }
-  
+
   return (
-    <img 
-      src="/assets/me/profile.png" 
-      alt="Udayjot" 
+    <img
+      src="/assets/me/profile.png"
+      alt="Udayjot"
       className={className}
       onError={() => setHasError(true)}
     />
@@ -74,15 +74,15 @@ interface ProjectImageProps {
 
 function ProjectImage({ src, fallbackSrc, alt, className = "" }: ProjectImageProps) {
   const [imgSrc, setImgSrc] = useState(src);
-  
+
   React.useEffect(() => {
     setImgSrc(src);
   }, [src]);
-  
+
   return (
-    <img 
-      src={imgSrc} 
-      alt={alt} 
+    <img
+      src={imgSrc}
+      alt={alt}
       className={className}
       onError={() => {
         if (fallbackSrc && imgSrc !== fallbackSrc) {
@@ -158,12 +158,12 @@ export default function App() {
       setIsTyping(true);
       const targetTheme = isDarkOrder ? 'dark' : 'light';
       setTheme(targetTheme);
-      
-      const userMsg: ChatMessage = { 
-        id: Date.now().toString(), 
-        query, 
-        type: 'general', 
-        title: "Query" 
+
+      const userMsg: ChatMessage = {
+        id: Date.now().toString(),
+        query,
+        type: 'general',
+        title: "Query"
       };
       setChatHistory(prev => [...prev, userMsg]);
       setActiveIndex(chatHistory.length);
@@ -182,22 +182,22 @@ export default function App() {
       }, 1000);
       return;
     }
-    
+
     setIsTyping(true);
-    const userMsg: ChatMessage = { 
-      id: Date.now().toString(), 
-      query, 
-      type: typeHint as any, 
-      title: "Query" 
+    const userMsg: ChatMessage = {
+      id: Date.now().toString(),
+      query,
+      type: typeHint as any,
+      title: "Query"
     };
-    
+
     setChatHistory(prev => [...prev, userMsg]);
     setActiveIndex(chatHistory.length);
-    
+
     try {
       // Enforce a minimum 0.6s typing animation for a realistic feel
       const minDelayPromise = new Promise(resolve => setTimeout(resolve, 600));
-      
+
       const historyPayload = chatHistory.flatMap(msg => {
         const msgs = [{ role: 'user', content: msg.query }];
         if (msg.ai_text) {
@@ -212,23 +212,23 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query, history: historyPayload })
       });
-      
+
       const [response] = await Promise.all([responsePromise, minDelayPromise]);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
       console.log(`[AI Response] Generated via: ${data.provider}`);
-      
+
       let responseTitle = "Response";
       if (data.intent === 'projects') responseTitle = "My Projects";
       if (data.intent === 'skills') responseTitle = "Skills & Expertise";
       if (data.intent === 'resume') responseTitle = "Professional Experience";
       if (data.intent === 'me') responseTitle = "About Me";
       if (data.intent === 'hobbies') responseTitle = "Beyond the Code";
-      
+
       const aiMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         query: query,
@@ -237,7 +237,7 @@ export default function App() {
         ai_text: data.ai_text,
         provider: data.provider
       };
-      
+
       setChatHistory(prev => [...prev, aiMsg]);
       setActiveIndex(chatHistory.length + 1);
     } catch (error) {
@@ -258,15 +258,14 @@ export default function App() {
 
   return (
     <ReactLenis root>
-      <div className={`min-h-screen relative flex flex-col font-sans transition-colors duration-500 ${
-        theme === 'dark' 
-          ? 'bg-black text-slate-100' 
+      <div className={`min-h-screen relative flex flex-col font-sans transition-colors duration-500 ${theme === 'dark'
+          ? 'bg-black text-slate-100'
           : viewState === 'chat' ? 'bg-white text-slate-800' : 'bg-[#FDFDFD] text-slate-800'
-      }`}>
-        
+        }`}>
+
         <AnimatePresence>
           {viewState === 'landing' && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}
               className="fixed inset-0 z-0 pointer-events-none"
             >
@@ -281,32 +280,30 @@ export default function App() {
         <header className="fixed top-0 left-0 right-0 w-full px-6 pt-6 pb-4 flex justify-between items-start z-40 pointer-events-none">
           <AnimatePresence>
             {viewState === 'chat' && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className={`absolute top-0 left-0 right-0 h-40 -z-10 pointer-events-none transition-colors duration-500 ${
-                  theme === 'dark' 
-                    ? 'bg-gradient-to-b from-black via-black/95 to-transparent' 
+                className={`absolute top-0 left-0 right-0 h-40 -z-10 pointer-events-none transition-colors duration-500 ${theme === 'dark'
+                    ? 'bg-gradient-to-b from-black via-black/95 to-transparent'
                     : 'bg-gradient-to-b from-white via-white/95 to-transparent'
-                }`}
+                  }`}
               />
             )}
           </AnimatePresence>
           <div className="flex-1">
             <AnimatePresence>
               {viewState === 'landing' && (
-                <motion.a 
+                <motion.a
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  href="https://github.com/Udx3012" 
-                  target="_blank" 
+                  href="https://github.com/Udx3012"
+                  target="_blank"
                   rel="noopener noreferrer"
-                  className={`inline-flex items-center gap-2 backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.05)] px-5 py-2.5 rounded-full text-sm font-medium transition-all pointer-events-auto ${
-                    theme === 'dark' 
-                      ? 'bg-zinc-900/30 border-zinc-800/50 hover:bg-zinc-800/50 text-zinc-300' 
+                  className={`inline-flex items-center gap-2 backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.05)] px-5 py-2.5 rounded-full text-sm font-medium transition-all pointer-events-auto ${theme === 'dark'
+                      ? 'bg-zinc-900/30 border-zinc-800/50 hover:bg-zinc-800/50 text-zinc-300'
                       : 'bg-white/30 border-white/50 hover:bg-white/50 text-slate-700'
-                  }`}
+                    }`}
                 >
                   <div className="w-6 h-6 bg-zinc-800 rounded-full flex items-center justify-center shadow-inner">
-                     <FileText className="w-3 h-3 text-white" />
+                    <FileText className="w-3 h-3 text-white" />
                   </div>
                   Resume <ArrowRight className="w-3 h-3 ml-1 opacity-70" />
                 </motion.a>
@@ -317,7 +314,7 @@ export default function App() {
           <div className="flex-1 flex justify-center pointer-events-auto">
             <AnimatePresence>
               {viewState === 'chat' && (
-                <motion.button 
+                <motion.button
                   onClick={() => setViewState('landing')}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -329,25 +326,23 @@ export default function App() {
               )}
             </AnimatePresence>
           </div>
-          
+
           <div className="flex-1 flex justify-end items-center gap-2.5 pointer-events-auto">
-            <button 
+            <button
               onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
-              className={`p-2.5 rounded-full transition-colors border border-transparent backdrop-blur-xl cursor-pointer ${
-                theme === 'dark' 
-                  ? 'hover:bg-white/5 hover:border-zinc-800 text-amber-400' 
+              className={`p-2.5 rounded-full transition-colors border border-transparent backdrop-blur-xl cursor-pointer ${theme === 'dark'
+                  ? 'hover:bg-white/5 hover:border-zinc-800 text-amber-400'
                   : 'hover:bg-black/5 hover:border-slate-200 text-slate-655'
-              }`}
+                }`}
             >
               {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
             </button>
-            <button 
+            <button
               onClick={() => setIsModalOpen(true)}
-              className={`p-2.5 rounded-full transition-colors border border-transparent backdrop-blur-xl cursor-pointer ${
-                theme === 'dark' 
-                  ? 'hover:bg-white/5 hover:border-zinc-800 text-zinc-400' 
+              className={`p-2.5 rounded-full transition-colors border border-transparent backdrop-blur-xl cursor-pointer ${theme === 'dark'
+                  ? 'hover:bg-white/5 hover:border-zinc-800 text-zinc-400'
                   : 'hover:bg-black/5 hover:border-slate-200 text-slate-600'
-              }`}
+                }`}
             >
               <Info className="w-5 h-5" />
             </button>
@@ -359,11 +354,11 @@ export default function App() {
             {viewState === 'landing' ? (
               <LandingView key="landing" onQuery={handleQuery} theme={theme} />
             ) : (
-              <ChatView 
-                key="chat" 
-                history={chatHistory} 
-                activeIndex={activeIndex} 
-                setActiveIndex={setActiveIndex} 
+              <ChatView
+                key="chat"
+                history={chatHistory}
+                activeIndex={activeIndex}
+                setActiveIndex={setActiveIndex}
                 onQuery={handleQuery}
                 isTyping={isTyping}
                 onSelectProject={setSelectedProject}
@@ -372,15 +367,15 @@ export default function App() {
             )}
           </AnimatePresence>
         </main>
-        
-        <InfoModal 
-          isOpen={isModalOpen} 
-          onClose={() => setIsModalOpen(false)} 
+
+        <InfoModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
           onContactClick={() => {
             setIsModalOpen(false);
             handleQuery("How can I contact you?", 'contact');
           }}
-          theme={theme} 
+          theme={theme}
         />
         <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} theme={theme} />
       </div>
@@ -409,7 +404,7 @@ function LandingView({ onQuery, theme }: { onQuery: (q: string, t: ChatMessage['
   return (
     <>
       <FluidCursor />
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
@@ -418,7 +413,7 @@ function LandingView({ onQuery, theme }: { onQuery: (q: string, t: ChatMessage['
       >
         <div className="text-center mb-6">
           <h2 className={`text-2xl sm:text-3xl font-serif italic mb-3 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-700'}`}>Hey, I'm Udayjot 👋</h2>
-          <h1 className={`text-5xl sm:text-7xl md:text-8xl font-serif font-bold tracking-tight transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-100' : 'text-slate-900'}`}>AI Developer</h1>
+          <h1 className={`text-5xl sm:text-7xl md:text-8xl font-serif font-bold tracking-tight transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-100' : 'text-slate-900'}`}>AI Engineer</h1>
         </div>
 
         <motion.div className="w-24 h-24 mb-8 flex items-center justify-center text-5xl">
@@ -426,19 +421,18 @@ function LandingView({ onQuery, theme }: { onQuery: (q: string, t: ChatMessage['
         </motion.div>
 
         <div className="w-full relative max-w-xl mb-10">
-          <input 
-            type="text" 
+          <input
+            type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-            placeholder={dynamicPlaceholder} 
-            className={`w-full backdrop-blur-2xl border shadow-[0_8px_32px_rgba(0,0,0,0.06)] rounded-full py-4 pl-6 pr-14 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all placeholder:text-slate-500 ${
-              theme === 'dark' 
-                ? 'bg-zinc-900/40 border-zinc-800/60 text-zinc-100' 
+            placeholder={dynamicPlaceholder}
+            className={`w-full backdrop-blur-2xl border shadow-[0_8px_32px_rgba(0,0,0,0.06)] rounded-full py-4 pl-6 pr-14 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all placeholder:text-slate-500 ${theme === 'dark'
+                ? 'bg-zinc-900/40 border-zinc-800/60 text-zinc-100'
                 : 'bg-white/40 border-white/60 text-slate-855'
-            }`}
+              }`}
           />
-          <button 
+          <button
             onClick={handleSubmit}
             className="absolute right-2 top-2 bottom-2 aspect-square bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center text-white transition-colors shadow-md cursor-pointer"
           >
@@ -461,13 +455,12 @@ function LandingView({ onQuery, theme }: { onQuery: (q: string, t: ChatMessage['
 
 function LandingPrompt({ icon, label, onClick, theme }: { icon: React.ReactNode, label: string, onClick: () => void, theme?: string }) {
   return (
-    <button 
+    <button
       onClick={onClick}
-      className={`flex items-center gap-2 backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.04)] px-6 py-3 rounded-2xl hover:scale-105 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all text-sm font-medium cursor-pointer ${
-        theme === 'dark' 
-          ? 'bg-zinc-900/30 border-zinc-800/50 hover:bg-zinc-800/50 text-zinc-350' 
+      className={`flex items-center gap-2 backdrop-blur-xl border shadow-[0_8px_32px_rgba(0,0,0,0.04)] px-6 py-3 rounded-2xl hover:scale-105 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all text-sm font-medium cursor-pointer ${theme === 'dark'
+          ? 'bg-zinc-900/30 border-zinc-800/50 hover:bg-zinc-800/50 text-zinc-350'
           : 'bg-white/30 border-white/50 hover:bg-white/60 text-slate-700'
-      }`}
+        }`}
     >
       {icon}
       {label}
@@ -475,18 +468,18 @@ function LandingPrompt({ icon, label, onClick, theme }: { icon: React.ReactNode,
   );
 }
 
-function ChatView({ 
-  history, 
-  activeIndex, 
-  onQuery, 
-  isTyping, 
+function ChatView({
+  history,
+  activeIndex,
+  onQuery,
+  isTyping,
   onSelectProject,
   theme
-}: { 
-  history: ChatMessage[], 
-  activeIndex: number, 
-  setActiveIndex: any, 
-  onQuery: any, 
+}: {
+  history: ChatMessage[],
+  activeIndex: number,
+  setActiveIndex: any,
+  onQuery: any,
   isTyping: boolean,
   onSelectProject: (p: Project) => void,
   theme?: string
@@ -519,10 +512,10 @@ function ChatView({
         }
         return (
           <span key={index}>
-            <a 
-              href={cleanUrl} 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href={cleanUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-blue-600 hover:text-blue-700 hover:underline break-all font-semibold"
             >
               {cleanUrl}
@@ -541,14 +534,14 @@ function ChatView({
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="w-full flex-1 flex flex-col items-center pt-32 pb-6 px-4 relative"
     >
       <div className="w-full max-w-4xl flex-1 flex flex-col relative z-10 pb-40">
-        
-        <motion.div 
+
+        <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
           className="w-full flex justify-end mb-6"
         >
@@ -559,23 +552,22 @@ function ChatView({
 
         <AnimatePresence mode="wait">
           {isTyping ? (
-            <motion.div 
+            <motion.div
               key="typing"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               className="w-full flex justify-start mb-6"
             >
-              <div className={`flex items-center gap-1.5 px-5 py-4 shadow-sm rounded-2xl rounded-bl-sm w-fit transition-colors duration-500 ${
-                theme === 'dark' ? 'bg-zinc-900 border border-zinc-800/80' : 'bg-slate-100'
-              }`}>
+              <div className={`flex items-center gap-1.5 px-5 py-4 shadow-sm rounded-2xl rounded-bl-sm w-fit transition-colors duration-500 ${theme === 'dark' ? 'bg-zinc-900 border border-zinc-800/80' : 'bg-slate-100'
+                }`}>
                 <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                 <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                 <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
               </div>
             </motion.div>
           ) : (
-            <motion.div 
+            <motion.div
               key="response"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -585,8 +577,8 @@ function ChatView({
               {activeMessage?.type === 'projects' && <ProjectsCarousel onSelectProject={onSelectProject} theme={theme} />}
               {activeMessage?.type === 'resume' && <ExperienceTimeline />}
               {activeMessage?.type === 'skills' && (
-                <SkillsExpertise 
-                  onSelectSkill={(skill) => onQuery(`Tell me about your experience with ${skill}.`, 'skills')} 
+                <SkillsExpertise
+                  onSelectSkill={(skill) => onQuery(`Tell me about your experience with ${skill}.`, 'skills')}
                   theme={theme}
                 />
               )}
@@ -595,11 +587,10 @@ function ChatView({
 
               {activeMessage?.ai_text ? (
                 <div className="w-full flex justify-start mb-6">
-                  <div className={`px-6 py-4 rounded-2xl rounded-bl-sm shadow-sm text-[15px] max-w-[85%] leading-relaxed transition-colors duration-500 ${
-                    theme === 'dark' 
-                      ? 'bg-zinc-900 text-zinc-200 border border-zinc-800/80' 
+                  <div className={`px-6 py-4 rounded-2xl rounded-bl-sm shadow-sm text-[15px] max-w-[85%] leading-relaxed transition-colors duration-500 ${theme === 'dark'
+                      ? 'bg-zinc-900 text-zinc-200 border border-zinc-800/80'
                       : 'bg-slate-100 text-slate-800 border border-slate-200/50'
-                  }`}>
+                    }`}>
                     <StreamingText key={activeMessage.id} text={activeMessage.ai_text} renderText={renderChatText} />
                   </div>
                 </div>
@@ -609,12 +600,11 @@ function ChatView({
                     <div className="w-full text-left mb-6">
                       <h2 className={`text-3xl font-bold tracking-tight transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-100' : 'text-slate-855'}`}>{activeMessage?.title}</h2>
                     </div>
-                    
-                    <div className={`w-full h-[22rem] rounded-[2rem] border flex flex-col items-center justify-center shadow-sm mb-8 transition-colors duration-500 ${
-                      theme === 'dark' ? 'bg-zinc-900/40 border-zinc-800 text-zinc-400' : 'bg-slate-50/50 border-slate-200 text-slate-505'
-                    }`}>
-                       <Code2 className="w-8 h-8 mb-2 opacity-50" />
-                       <span>[ Dynamic &lt;{activeMessage?.type} /&gt; renders here ]</span>
+
+                    <div className={`w-full h-[22rem] rounded-[2rem] border flex flex-col items-center justify-center shadow-sm mb-8 transition-colors duration-500 ${theme === 'dark' ? 'bg-zinc-900/40 border-zinc-800 text-zinc-400' : 'bg-slate-50/50 border-slate-200 text-slate-505'
+                      }`}>
+                      <Code2 className="w-8 h-8 mb-2 opacity-50" />
+                      <span>[ Dynamic &lt;{activeMessage?.type} /&gt; renders here ]</span>
                     </div>
                   </div>
                 )
@@ -624,7 +614,7 @@ function ChatView({
         </AnimatePresence>
       </div>
 
-      <div 
+      <div
         className="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-2xl px-4 flex flex-col items-center z-30"
       >
         <MagnifyingContainer>
@@ -637,19 +627,18 @@ function ChatView({
         </MagnifyingContainer>
 
         <div className="w-full relative px-2">
-          <input 
-            type="text" 
+          <input
+            type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-            placeholder={dynamicPlaceholder} 
-            className={`w-full backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.06)] border rounded-full py-4 pl-6 pr-14 text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all placeholder-zinc-400 ${
-              theme === 'dark' 
-                ? 'bg-zinc-900/40 border-zinc-800/60 text-zinc-100' 
+            placeholder={dynamicPlaceholder}
+            className={`w-full backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.06)] border rounded-full py-4 pl-6 pr-14 text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all placeholder-zinc-400 ${theme === 'dark'
+                ? 'bg-zinc-900/40 border-zinc-800/60 text-zinc-100'
                 : 'bg-white/40 border-white/60 text-slate-800'
-            }`}
+              }`}
           />
-          <button 
+          <button
             onClick={handleSubmit}
             className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-all shadow-md shadow-blue-500/20 cursor-pointer"
           >
@@ -663,13 +652,12 @@ function ChatView({
 
 function ChatPrompt({ icon, label, onClick, theme }: { icon: React.ReactNode, label: string, onClick: () => void, theme?: string }) {
   return (
-    <button 
+    <button
       onClick={onClick}
-      className={`flex items-center gap-1.5 backdrop-blur-md border shadow-sm px-4 py-2.5 rounded-full transition-colors text-[13px] font-semibold h-full whitespace-nowrap cursor-pointer ${
-        theme === 'dark' 
-          ? 'bg-zinc-900/40 border-zinc-800/60 hover:bg-zinc-800/60 text-zinc-300' 
+      className={`flex items-center gap-1.5 backdrop-blur-md border shadow-sm px-4 py-2.5 rounded-full transition-colors text-[13px] font-semibold h-full whitespace-nowrap cursor-pointer ${theme === 'dark'
+          ? 'bg-zinc-900/40 border-zinc-800/60 hover:bg-zinc-800/60 text-zinc-300'
           : 'bg-white/40 border-white/60 hover:bg-white/60 text-slate-700'
-      }`}
+        }`}
     >
       {icon}
       {label}
@@ -680,12 +668,12 @@ function ChatPrompt({ icon, label, onClick, theme }: { icon: React.ReactNode, la
 function MagnifyingContainer({ children }: { children: React.ReactNode }) {
   const mouseX = useMotionValue(Infinity);
   return (
-    <motion.div 
+    <motion.div
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className="flex overflow-x-auto md:overflow-x-visible flex-nowrap justify-start md:justify-center gap-2 mb-4 h-[56px] md:h-[48px] items-center md:items-end pointer-events-auto w-full max-w-full px-4 md:px-0 no-scrollbar"
     >
-      {React.Children.map(children, (child) => 
+      {React.Children.map(children, (child) =>
         React.isValidElement(child) ? React.cloneElement(child as React.ReactElement<{ mouseX?: MotionValue<number> }>, { mouseX }) : child
       )}
     </motion.div>
@@ -694,7 +682,7 @@ function MagnifyingContainer({ children }: { children: React.ReactNode }) {
 
 function MagnifyingItem({ children, mouseX }: { children: React.ReactNode, mouseX?: MotionValue<number> }) {
   const ref = useRef<HTMLDivElement>(null);
-  
+
   const fallbackMouseX = useMotionValue(Infinity);
   const distance = useTransform(mouseX || fallbackMouseX, (val) => {
     const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
@@ -703,16 +691,16 @@ function MagnifyingItem({ children, mouseX }: { children: React.ReactNode, mouse
 
   const scaleTarget = useTransform(distance, [-150, 0, 150], [1, 1.35, 1]);
   const scale = useSpring(scaleTarget, { stiffness: 400, damping: 25 });
-  
+
   const marginTarget = useTransform(distance, [-150, 0, 150], [0, 10, 0]);
   const margin = useSpring(marginTarget, { stiffness: 400, damping: 25 });
-  
+
   const zIndex = useTransform(distance, [-150, 0, 150], [0, 50, 0]);
 
   return (
-    <motion.div 
-      ref={ref} 
-      style={{ scale, marginLeft: margin, marginRight: margin, zIndex: zIndex as any }} 
+    <motion.div
+      ref={ref}
+      style={{ scale, marginLeft: margin, marginRight: margin, zIndex: zIndex as any }}
       className="origin-bottom h-full relative"
     >
       {children}
@@ -725,58 +713,55 @@ function InfoModal({ isOpen, onClose, onContactClick, theme }: { isOpen: boolean
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="absolute inset-0 bg-black/20 backdrop-blur-sm"
           />
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className={`relative w-full max-w-2xl rounded-[2rem] shadow-2xl p-8 md:p-12 overflow-hidden transition-colors duration-500 ${
-              theme === 'dark' ? 'bg-zinc-950 text-zinc-100 border border-zinc-800/80' : 'bg-white text-slate-800'
-            }`}
+            className={`relative w-full max-w-2xl rounded-[2rem] shadow-2xl p-8 md:p-12 overflow-hidden transition-colors duration-500 ${theme === 'dark' ? 'bg-zinc-950 text-zinc-100 border border-zinc-800/80' : 'bg-white text-slate-800'
+              }`}
           >
             <div className="flex justify-between items-center mb-8">
               <h2 className={`text-3xl font-bold tracking-tight transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-50' : 'text-slate-900'}`}>Welcome to AI Portfolio</h2>
-              <button 
+              <button
                 onClick={onClose}
-                className={`p-2 rounded-full transition-colors cursor-pointer ${
-                  theme === 'dark' ? 'bg-white text-black hover:bg-zinc-200' : 'bg-black text-white hover:bg-zinc-800'
-                }`}
+                className={`p-2 rounded-full transition-colors cursor-pointer ${theme === 'dark' ? 'bg-white text-black hover:bg-zinc-200' : 'bg-black text-white hover:bg-zinc-800'
+                  }`}
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             <div className={`space-y-6 text-lg leading-relaxed transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-350' : 'text-slate-600'}`}>
               <div>
                 <h3 className={`text-xl font-bold mb-2 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-100' : 'text-slate-900'}`}>What's this?</h3>
                 <p>
-                  I'm so excited to present my <strong>brand new AI Portfolio.</strong><br/>
+                  I'm so excited to present my <strong>brand new AI Portfolio.</strong><br />
                   Whether you're a recruiter, a friend, family member, or just curious, feel free to ask anything you want!
                 </p>
               </div>
               <div>
                 <h3 className={`text-xl font-bold mb-2 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-100' : 'text-slate-900'}`}>Why?</h3>
                 <p>
-                  Traditional portfolios can be limiting.<br/>
-                  They can't adapt to every visitor's specific needs.<br/>
+                  Traditional portfolios can be limiting.<br />
+                  They can't adapt to every visitor's specific needs.<br />
                   My portfolio becomes <strong>exactly what you're interested in knowing about me and my work.</strong>
                 </p>
               </div>
             </div>
-            
+
             <div className="mt-10 flex flex-col items-center">
-              <button 
+              <button
                 onClick={onClose}
-                className={`px-8 py-3.5 rounded-full font-medium hover:scale-105 transition-all mb-6 shadow-md cursor-pointer ${
-                  theme === 'dark' ? 'bg-white text-black hover:bg-zinc-200' : 'bg-black text-white hover:bg-zinc-800'
-                }`}
+                className={`px-8 py-3.5 rounded-full font-medium hover:scale-105 transition-all mb-6 shadow-md cursor-pointer ${theme === 'dark' ? 'bg-white text-black hover:bg-zinc-200' : 'bg-black text-white hover:bg-zinc-800'
+                  }`}
               >
                 Start Chatting
               </button>
@@ -795,19 +780,18 @@ function MeProfile({ theme }: { theme?: string }) {
   return (
     <div className="w-full flex flex-col md:flex-row items-center md:items-start gap-8 mb-8">
       {/* Photo */}
-      <div className={`w-48 h-48 md:w-56 md:h-56 shrink-0 rounded-[2rem] overflow-hidden shadow-sm border transition-colors duration-500 ${
-        theme === 'dark' ? 'bg-zinc-900 border-zinc-800' : 'bg-slate-100 border-slate-200/60'
-      }`}>
-         <ProfileImage className="w-full h-full object-cover" />
+      <div className={`w-48 h-48 md:w-56 md:h-56 shrink-0 rounded-[2rem] overflow-hidden shadow-sm border transition-colors duration-500 ${theme === 'dark' ? 'bg-zinc-900 border-zinc-800' : 'bg-slate-100 border-slate-200/60'
+        }`}>
+        <ProfileImage className="w-full h-full object-cover" />
       </div>
-      
+
       {/* Details */}
       <div className="flex-1 flex flex-col text-left">
         <h1 className={`text-4xl font-bold mb-2 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-100' : 'text-slate-900'}`}>Udayjot Singh</h1>
         <p className={`mb-4 font-medium transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-400' : 'text-slate-505'}`}>AI Developer | Full-Stack Engineer <span className="mx-2">•</span> Delhi, India</p>
-        
+
         <p className={`leading-relaxed mb-6 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-700'}`}>
-          Hey 👋<br/>
+          Hey 👋<br />
           I'm a third-year B.Tech student in AI & ML at VIPS, Delhi, with a habit of turning ideas into shipped products rather than letting them sit as concepts. My interest in tech started early — I represented Delhi as one of two students selected for the 6th Moscow Olympiad.
         </p>
 
@@ -901,9 +885,9 @@ function ProjectsCarousel({ onSelectProject, theme }: { onSelectProject: (p: Pro
       <div className="w-full text-left mb-6">
         <h2 className={`text-3xl font-bold tracking-tight transition-colors duration-500 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'}`}>My Projects</h2>
       </div>
-      
+
       {/* Carousel Container */}
-      <div 
+      <div
         ref={containerRef}
         className="w-full overflow-hidden pt-4 pb-6 -mx-4 px-4 sm:mx-0 sm:px-0 cursor-grab active:cursor-grabbing select-none"
         onMouseEnter={() => setIsHovered(true)}
@@ -912,7 +896,7 @@ function ProjectsCarousel({ onSelectProject, theme }: { onSelectProject: (p: Pro
           setIsDragging(false);
         }}
       >
-        <motion.div 
+        <motion.div
           ref={trackRef}
           drag="x"
           style={{ x }}
@@ -926,7 +910,7 @@ function ProjectsCarousel({ onSelectProject, theme }: { onSelectProject: (p: Pro
           className="flex gap-4 w-max"
         >
           {tripledProjects.map((project, index) => (
-            <motion.div 
+            <motion.div
               key={`${project.id}-${index}`}
               onTap={() => {
                 if (!isDragging) {
@@ -939,15 +923,15 @@ function ProjectsCarousel({ onSelectProject, theme }: { onSelectProject: (p: Pro
             >
               {/* Background Image with Overlay */}
               <div className="absolute inset-0 z-0">
-                <ProjectImage 
-                  src={project.thumbnail} 
-                  fallbackSrc={project.fallbackThumbnail} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover opacity-50 transition-all duration-700 ease-out" 
+                <ProjectImage
+                  src={project.thumbnail}
+                  fallbackSrc={project.fallbackThumbnail}
+                  alt={project.title}
+                  className="w-full h-full object-cover opacity-50 transition-all duration-700 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
               </div>
-              
+
               {/* Content */}
               <div className="relative z-10 flex flex-col h-full pointer-events-none">
                 <p className="text-white/80 text-sm font-medium mb-1 tracking-wide">{project.category}</p>
@@ -960,23 +944,21 @@ function ProjectsCarousel({ onSelectProject, theme }: { onSelectProject: (p: Pro
 
       {/* Navigation Arrows */}
       <div className="flex w-full items-center justify-end gap-3 mt-2 pr-4 sm:pr-0">
-        <button 
-          onClick={() => handleChevron('left')} 
-          className={`w-10 h-10 flex items-center justify-center rounded-full border transition-colors shadow-sm cursor-pointer ${
-            theme === 'dark'
+        <button
+          onClick={() => handleChevron('left')}
+          className={`w-10 h-10 flex items-center justify-center rounded-full border transition-colors shadow-sm cursor-pointer ${theme === 'dark'
               ? 'bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-100 border-slate-800/80'
               : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 border-transparent'
-          }`}
+            }`}
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
-        <button 
-          onClick={() => handleChevron('right')} 
-          className={`w-10 h-10 flex items-center justify-center rounded-full border transition-colors shadow-sm cursor-pointer ${
-            theme === 'dark'
+        <button
+          onClick={() => handleChevron('right')}
+          className={`w-10 h-10 flex items-center justify-center rounded-full border transition-colors shadow-sm cursor-pointer ${theme === 'dark'
               ? 'bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-slate-100 border-slate-800/80'
               : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 border-transparent'
-          }`}
+            }`}
         >
           <ChevronRight className="w-5 h-5" />
         </button>
@@ -993,29 +975,27 @@ function ProjectModal({ project, onClose, theme }: { project: Project | null, on
       {project && (
         <div className="fixed inset-0 z-[100] flex items-start justify-center p-4 sm:p-6 md:p-8 pt-28 md:pt-32">
           {/* Backdrop */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={onClose}
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
-          
+
           {/* Modal Content */}
-          <motion.div 
-            initial={{ opacity: 0, y: 40, scale: 0.95 }} 
-            animate={{ opacity: 1, y: 0, scale: 1 }} 
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className={`relative w-full max-w-3xl max-h-[calc(100vh-8rem)] md:max-h-[calc(100vh-10rem)] rounded-[2rem] shadow-2xl overflow-y-auto transition-colors duration-500 ${
-              theme === 'dark' ? 'bg-zinc-950 text-zinc-100 border border-zinc-800/80' : 'bg-white text-slate-800'
-            }`}
+            className={`relative w-full max-w-3xl max-h-[calc(100vh-8rem)] md:max-h-[calc(100vh-10rem)] rounded-[2rem] shadow-2xl overflow-y-auto transition-colors duration-500 ${theme === 'dark' ? 'bg-zinc-950 text-zinc-100 border border-zinc-800/80' : 'bg-white text-slate-800'
+              }`}
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {/* Close Button */}
-            <button 
+            <button
               onClick={onClose}
-              className={`absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full transition-colors z-20 cursor-pointer ${
-                theme === 'dark' ? 'bg-zinc-900 hover:bg-zinc-800 text-zinc-400' : 'bg-slate-100 hover:bg-slate-200 text-slate-505'
-              }`}
+              className={`absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full transition-colors z-20 cursor-pointer ${theme === 'dark' ? 'bg-zinc-900 hover:bg-zinc-800 text-zinc-400' : 'bg-slate-100 hover:bg-slate-200 text-slate-505'
+                }`}
             >
               <X className="w-5 h-5" />
             </button>
@@ -1023,25 +1003,23 @@ function ProjectModal({ project, onClose, theme }: { project: Project | null, on
             <div className="p-8 md:p-12">
               <p className={`text-sm font-medium mb-2 ${theme === 'dark' ? 'text-zinc-400' : 'text-slate-500'}`}>{project.category}</p>
               <h2 className={`text-4xl md:text-5xl font-bold tracking-tight mb-10 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-50' : 'text-slate-900'}`}>{project.title}</h2>
-              
+
               {/* Description */}
-              <div className={`rounded-2xl p-6 md:p-8 mb-10 border transition-colors duration-500 ${
-                theme === 'dark' ? 'bg-zinc-900/60 border-zinc-800/70' : 'bg-slate-50 border-slate-100'
-              }`}>
+              <div className={`rounded-2xl p-6 md:p-8 mb-10 border transition-colors duration-500 ${theme === 'dark' ? 'bg-zinc-900/60 border-zinc-800/70' : 'bg-slate-50 border-slate-100'
+                }`}>
                 <p className={`leading-relaxed text-[17px] mb-8 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-700'}`}>
                   {project.description}
                 </p>
-                
+
                 {/* Technologies */}
                 <div>
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Technologies</p>
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map(tech => (
-                      <span 
-                        key={tech} 
-                        className={`px-3 py-1.5 border rounded-md text-sm font-medium shadow-sm transition-colors duration-500 ${
-                          theme === 'dark' ? 'bg-zinc-950 border-zinc-800 text-zinc-300' : 'bg-white border-slate-200 text-slate-700'
-                        }`}
+                      <span
+                        key={tech}
+                        className={`px-3 py-1.5 border rounded-md text-sm font-medium shadow-sm transition-colors duration-500 ${theme === 'dark' ? 'bg-zinc-950 border-zinc-800 text-zinc-300' : 'bg-white border-slate-200 text-slate-700'
+                          }`}
                       >
                         {tech}
                       </span>
@@ -1059,13 +1037,12 @@ function ProjectModal({ project, onClose, theme }: { project: Project | null, on
                   {project.links.map(link => {
                     if (!link.url) {
                       return (
-                        <div 
-                          key={link.label} 
-                          className={`flex items-center justify-between p-4 rounded-xl font-medium border transition-colors duration-500 ${
-                            theme === 'dark' 
-                              ? 'bg-zinc-900/20 border-zinc-800/40 text-zinc-400' 
+                        <div
+                          key={link.label}
+                          className={`flex items-center justify-between p-4 rounded-xl font-medium border transition-colors duration-500 ${theme === 'dark'
+                              ? 'bg-zinc-900/20 border-zinc-800/40 text-zinc-400'
                               : 'bg-slate-50/50 border-slate-200/50 text-slate-500'
-                          }`}
+                            }`}
                         >
                           <span className="flex items-center gap-2">
                             <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
@@ -1075,16 +1052,15 @@ function ProjectModal({ project, onClose, theme }: { project: Project | null, on
                       );
                     }
                     return (
-                      <a 
-                        key={link.label} 
-                        href={link.url} 
-                        target="_blank" 
-                        rel="noreferrer" 
-                        className={`flex items-center justify-between p-4 rounded-xl transition-colors group font-medium border ${
-                          theme === 'dark' 
-                            ? 'bg-zinc-900/60 hover:bg-zinc-900 border-zinc-800 text-zinc-200' 
+                      <a
+                        key={link.label}
+                        href={link.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`flex items-center justify-between p-4 rounded-xl transition-colors group font-medium border ${theme === 'dark'
+                            ? 'bg-zinc-900/60 hover:bg-zinc-900 border-zinc-800 text-zinc-200'
                             : 'bg-slate-50 hover:bg-slate-100 border-slate-100 text-slate-800'
-                        }`}
+                          }`}
                       >
                         {link.label}
                         <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-650 transition-colors" />
@@ -1097,14 +1073,13 @@ function ProjectModal({ project, onClose, theme }: { project: Project | null, on
               {/* Screenshots */}
               <div className="w-full flex flex-col gap-6">
                 {project.screenshots.map((img, i) => (
-                  <ProjectImage 
-                    key={i} 
-                    src={img} 
-                    fallbackSrc={project.fallbackScreenshots?.[i]} 
-                    alt={`${project.title} screenshot ${i+1}`} 
-                    className={`w-full rounded-2xl shadow-sm border object-cover ${
-                      theme === 'dark' ? 'border-zinc-800' : 'border-slate-100'
-                    }`} 
+                  <ProjectImage
+                    key={i}
+                    src={img}
+                    fallbackSrc={project.fallbackScreenshots?.[i]}
+                    alt={`${project.title} screenshot ${i + 1}`}
+                    className={`w-full rounded-2xl shadow-sm border object-cover ${theme === 'dark' ? 'border-zinc-800' : 'border-slate-100'
+                      }`}
                   />
                 ))}
               </div>
@@ -1120,20 +1095,18 @@ function SkillsExpertise({ onSelectSkill, theme }: { onSelectSkill?: (skill: str
   return (
     <div className="w-full flex flex-col items-start mb-12 relative z-10 pt-2">
       <div className="w-full text-left mb-6">
-        <h2 className={`text-3xl font-bold tracking-tight transition-colors duration-500 ${
-          theme === 'dark' ? 'text-slate-100' : 'text-slate-800'
-        }`}>Skills & Expertise</h2>
+        <h2 className={`text-3xl font-bold tracking-tight transition-colors duration-500 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'
+          }`}>Skills & Expertise</h2>
       </div>
-      
+
       <div className="w-full flex flex-col gap-10">
         {skillsData.map((category) => (
           <div key={category.title} className="w-full flex flex-col items-start">
-            <h3 className={`text-xl font-bold mb-4 flex items-center gap-2 transition-colors duration-500 ${
-              theme === 'dark' ? 'text-zinc-100' : 'text-slate-900'
-            }`}>
+            <h3 className={`text-xl font-bold mb-4 flex items-center gap-2 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-100' : 'text-slate-900'
+              }`}>
               <span className="text-slate-500 font-mono tracking-tighter">{'</>'}</span> {category.title}
             </h3>
-            
+
             <div className="flex flex-wrap gap-2.5">
               {category.skills.map((skill, sIdx) => (
                 <motion.button
@@ -1144,9 +1117,8 @@ function SkillsExpertise({ onSelectSkill, theme }: { onSelectSkill?: (skill: str
                   whileTap={{ scale: 0.95 }}
                   transition={{ delay: sIdx * 0.05 }}
                   onClick={() => onSelectSkill?.(skill)}
-                  className={`px-4 py-2 rounded-full text-[13px] font-medium tracking-wide transition-all cursor-pointer shadow-sm border-0 outline-none ${
-                    theme === 'dark' ? 'bg-zinc-900 text-zinc-200' : 'bg-[#1A1A1A] text-white'
-                  }`}
+                  className={`px-4 py-2 rounded-full text-[13px] font-medium tracking-wide transition-all cursor-pointer shadow-sm border-0 outline-none ${theme === 'dark' ? 'bg-zinc-900 text-zinc-200' : 'bg-[#1A1A1A] text-white'
+                    }`}
                 >
                   {skill}
                 </motion.button>
@@ -1173,23 +1145,22 @@ function ContactCard({ theme }: { theme?: string }) {
   };
 
   return (
-    <div className={`w-full border rounded-3xl p-6 md:p-8 mb-6 shadow-sm flex flex-col items-stretch text-left transition-colors duration-500 ${
-      theme === 'dark' ? 'bg-zinc-900/60 border-zinc-800/80 text-zinc-100' : 'bg-[#f8f9fa] border-slate-200/60 text-slate-800'
-    }`}>
+    <div className={`w-full border rounded-3xl p-6 md:p-8 mb-6 shadow-sm flex flex-col items-stretch text-left transition-colors duration-500 ${theme === 'dark' ? 'bg-zinc-900/60 border-zinc-800/80 text-zinc-100' : 'bg-[#f8f9fa] border-slate-200/60 text-slate-800'
+      }`}>
       <div className="flex justify-between items-center mb-4">
         <h2 className={`text-2xl md:text-3xl font-bold tracking-tight transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-100' : 'text-slate-900'}`}>Contacts</h2>
         <span className="text-sm md:text-base text-slate-500 font-medium">@Udx3012</span>
       </div>
-      
+
       <hr className={`mb-6 transition-colors duration-500 ${theme === 'dark' ? 'border-zinc-800/60' : 'border-slate-200/80'}`} />
-      
-      <a 
-        href="mailto:ughatoura@gmail.com" 
+
+      <a
+        href="mailto:ughatoura@gmail.com"
         className="text-blue-500 hover:text-blue-600 font-normal text-lg md:text-xl mb-6 self-start transition-colors"
       >
         ughatoura@gmail.com
       </a>
-      
+
       <div className="flex flex-wrap gap-2.5">
         {socials.map((social) => (
           <a
@@ -1207,7 +1178,7 @@ function ContactCard({ theme }: { theme?: string }) {
           className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full text-sm font-normal tracking-wide transition-all shadow-sm active:scale-95 cursor-pointer border-0 outline-none flex items-center gap-1.5"
         >
           <svg className="w-4 h-4 inline-block" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z"/>
+            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.894.077.077 0 0 1-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 0 1 .077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.195.373.289a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z" />
           </svg>
           {copied ? 'Copied!' : 'Discord: carnage_30'}
         </button>
@@ -1225,10 +1196,10 @@ function BeyondTheCode({ theme }: { theme?: string }) {
       description: (
         <>
           Co-Founder,{" "}
-          <a 
-            href="https://halftonemotion.vercel.app" 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <a
+            href="https://halftonemotion.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300 font-semibold"
           >
             @HalftoneMotion
@@ -1264,9 +1235,8 @@ function BeyondTheCode({ theme }: { theme?: string }) {
   return (
     <div className="w-full flex flex-col items-start mb-8 relative z-10 pt-2 text-left">
       <div className="w-full text-left mb-6">
-        <h2 className={`text-3xl font-bold tracking-tight transition-colors duration-500 ${
-          theme === 'dark' ? 'text-slate-100' : 'text-slate-800'
-        }`}>Beyond the Code</h2>
+        <h2 className={`text-3xl font-bold tracking-tight transition-colors duration-500 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-800'
+          }`}>Beyond the Code</h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
@@ -1276,32 +1246,28 @@ function BeyondTheCode({ theme }: { theme?: string }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className={`border rounded-3xl p-6 shadow-sm flex flex-col items-start bg-gradient-to-br ${hobby.gradient} transition-all duration-500 ${
-              theme === 'dark'
+            className={`border rounded-3xl p-6 shadow-sm flex flex-col items-start bg-gradient-to-br ${hobby.gradient} transition-all duration-500 ${theme === 'dark'
                 ? 'border-zinc-800/80 hover:border-zinc-700/80 text-zinc-150'
                 : 'border-slate-200/60 hover:border-slate-300/60 text-slate-850'
-            }`}
+              }`}
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className={`p-2.5 rounded-2xl ${
-                theme === 'dark' ? 'bg-zinc-950/60' : 'bg-white'
-              } shadow-sm`}>
+              <div className={`p-2.5 rounded-2xl ${theme === 'dark' ? 'bg-zinc-950/60' : 'bg-white'
+                } shadow-sm`}>
                 {hobby.icon}
               </div>
               <div>
                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                   {hobby.category}
                 </span>
-                <h3 className={`text-lg font-bold transition-colors duration-500 ${
-                  theme === 'dark' ? 'text-zinc-100' : 'text-slate-900'
-                }`}>
+                <h3 className={`text-lg font-bold transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-100' : 'text-slate-900'
+                  }`}>
                   {hobby.title}
                 </h3>
               </div>
             </div>
-            <p className={`text-sm leading-relaxed ${
-              theme === 'dark' ? 'text-zinc-400' : 'text-slate-600'
-            }`}>
+            <p className={`text-sm leading-relaxed ${theme === 'dark' ? 'text-zinc-400' : 'text-slate-600'
+              }`}>
               {hobby.description}
             </p>
           </motion.div>
