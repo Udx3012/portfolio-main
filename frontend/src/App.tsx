@@ -24,7 +24,7 @@ function MemojiAvatar({ type, className = "" }: { type: 'landing' | 'chat'; clas
   const [hasError, setHasError] = useState(false);
   
   const fallbackEmoji = type === 'landing' ? '🙋🏽‍♂️' : '👨🏽‍💻';
-  const imgSrc = '/assets/memoji/avatar.png';
+  const imgSrc = '/assets/pfp/avatar.png';
   
   if (hasError) {
     return <span className={`${className} flex items-center justify-center`}>{fallbackEmoji}</span>;
