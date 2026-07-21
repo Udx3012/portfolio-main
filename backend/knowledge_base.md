@@ -20,15 +20,17 @@ This is the official, comprehensive grounding database for Udayjot Singh. It con
 ## 2. Technical Skills Stack
 
 ### Artificial Intelligence & Machine Learning
-*   **Languages**: Python
-*   **Concepts**: AI Agents, LLMs, Model Integration, Prompt Engineering
+*   **Languages**: Python, Rust
+*   **Concepts**: AI Agents, LLMs, Retrieval-Augmented Generation (RAG), Prompt Engineering, Fine-tuning, Vector Search
+*   **Vector Search & AI Tooling**: Qdrant Cloud, Pinecone, LangChain, LlamaIndex, Groq API, Gemini API, Hugging Face Serverless API
 
 ### Software Engineering & Programming Languages
-*   **Programming Languages**: C, C++, Java, JavaScript, TypeScript, Dart
-*   **Frontend Development**: HTML5, React, Next.js, Tailwind CSS
-*   **Backend & APIs**: Node.js, Supabase
-*   **Databases**: MongoDB
-*   **Hardware & Embedded**: Arduino
+*   **Programming Languages**: TypeScript, JavaScript, Python, Rust, C, C++, Java, Dart, Solidity
+*   **Frontend Development**: React, Next.js (App Router), Tailwind CSS, WebGL / Three.js, HTML5
+*   **Backend & APIs**: FastAPI, Node.js, Express, WebSockets, REST APIs
+*   **Databases**: MongoDB, Supabase (PostgreSQL)
+*   **DevOps & Deployment**: Docker, Git, GitHub Actions, Vercel, Render
+*   **Hardware & Embedded**: Arduino, ESP32, ESP8266, IoT Protocols (MQTT)
 *   **Design & Content Creation**: Photoshop, After Effects, Premiere Pro, Figma
 
 ---
