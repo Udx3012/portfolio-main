@@ -29,6 +29,7 @@ This is the official, comprehensive grounding database for Udayjot Singh. It con
 *   **Frontend Development**: React, Next.js (App Router), Tailwind CSS, WebGL / Three.js, HTML5
 *   **Backend & APIs**: FastAPI, Node.js, Express, WebSockets, REST APIs
 *   **Databases**: MongoDB, Supabase (PostgreSQL)
+*   **Blockchain & Web3**: Solidity, Smart Contracts, Polygon, Web3.js, Ethereum
 *   **DevOps & Deployment**: Docker, Git, GitHub Actions, Vercel, Render
 *   **Hardware & Embedded**: Arduino, ESP32, ESP8266, IoT Protocols (MQTT)
 *   **Design & Content Creation**: Photoshop, After Effects, Premiere Pro, Figma

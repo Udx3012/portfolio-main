@@ -36,6 +36,13 @@ export const skillsData: SkillCategory[] = [
     color: "bg-emerald-50 border-emerald-100 text-emerald-700"
   },
   {
+    title: "Blockchain & Web3",
+    description: "Building decentralized applications and smart contracts on-chain.",
+    icon: "Boxes",
+    skills: ["Solidity", "Smart Contracts", "Polygon", "Web3.js", "Ethereum"],
+    color: "bg-cyan-50 border-cyan-100 text-cyan-700"
+  },
+  {
     title: "Design & Content Creation",
     description: "Creating premium visuals, animations, and graphic designs.",
     icon: "PenTool",
