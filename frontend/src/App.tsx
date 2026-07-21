@@ -146,6 +146,17 @@ export default function App() {
     }
   }, [theme]);
 
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedProject]);
+
   const handleQuery = async (query: string, typeHint: string = 'general') => {
     if (viewState === 'landing') {
       setViewState('chat');
@@ -1074,9 +1085,9 @@ function ProjectModal({ project, onClose, theme }: { project: Project | null, on
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            data-lenis-prevent
             className={`relative w-full max-w-3xl max-h-[calc(100vh-8rem)] md:max-h-[calc(100vh-10rem)] rounded-[2rem] shadow-2xl overflow-y-auto transition-colors duration-500 ${theme === 'dark' ? 'bg-zinc-950 text-zinc-100 border border-zinc-800/80' : 'bg-white text-slate-800'
               }`}
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {/* Close Button */}
             <button
