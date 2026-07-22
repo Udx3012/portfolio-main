@@ -69,7 +69,7 @@ export const projectsData: Project[] = [
     description: "The Next-Gen v2 evolution of CommentSeed into a full-spectrum AI platform for content creators. Beyond comment generation, it adds AI-powered caption writing, hook generation, creative content briefs, and platform-native tone calibration across TikTok, YouTube, Instagram, and X.",
     technologies: ["Next.js 15", "TypeScript", "Tailwind CSS v4", "shadcn/ui", "Framer Motion", "Groq API"],
     links: [
-      { label: "GitHub Repository", url: "https://github.com/Udx3012/CreatorIntelligence" }
+      { label: "Currently Down", url: "" }
     ],
     screenshots: [],
     fallbackScreenshots: [
@@ -154,6 +154,22 @@ export const projectsData: Project[] = [
     screenshots: [],
     fallbackScreenshots: [
       "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1200&auto=format&fit=crop"
+    ]
+  },
+  {
+    id: "10",
+    category: "AI Safety & Geo-Intelligence Platform",
+    title: "Rakshak",
+    thumbnail: "/assets/projects/rakshak-thumb.png",
+    fallbackThumbnail: "https://images.unsplash.com/photo-1508873696983-2df515122519?q=80&w=600&auto=format&fit=crop",
+    description: "An AI-powered Smart Tourist Safety Platform engineered for Smart India Hackathon 2025. Delivers real-time intelligent threat scoring, dynamic polygon geo-fencing with low-latency perimeter breach alerts, instantaneous high-priority SOS emergency dispatch, an administrative police command dashboard, and decentralized blockchain-backed identity verification for secure, tamper-proof tourist credentials.",
+    technologies: ["Flutter", "React", "Node.js", "MongoDB", "Ethereum", "TensorFlow", "Dart", "Geo-Fencing"],
+    links: [
+      { label: "GitHub Repository", url: "https://github.com/Udx3012/Rakshak-Smart-Tourist-Safety-System" }
+    ],
+    screenshots: [],
+    fallbackScreenshots: [
+      "https://images.unsplash.com/photo-1508873696983-2df515122519?q=80&w=1200&auto=format&fit=crop"
     ]
   }
 ];
