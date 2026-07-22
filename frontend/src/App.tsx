@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import confetti from 'canvas-confetti';
 import { ArrowRight, Info, Briefcase, Code2, UserPlus, User, FileText, X, ChevronLeft, ChevronRight, Sun, Moon, Film, Trophy, Dumbbell, Shield, Heart } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, type MotionValue, useAnimationFrame, animate } from 'framer-motion';
@@ -129,11 +130,58 @@ export default function App() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const themeToggleRef = useRef<HTMLButtonElement>(null);
 
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const saved = localStorage.getItem('theme');
     return (saved === 'dark' || saved === 'light') ? saved : 'dark';
   });
+
+  const toggleThemeWithAnimation = (newTheme?: 'light' | 'dark') => {
+    const targetTheme = newTheme ?? (theme === 'light' ? 'dark' : 'light');
+
+    // If View Transitions API is not supported, just swap instantly
+    if (!(document as any).startViewTransition) {
+      setTheme(targetTheme);
+      return;
+    }
+
+    // Get the button center coordinates for the radial origin
+    const btn = themeToggleRef.current;
+    let x = window.innerWidth - 40;
+    let y = 24;
+    if (btn) {
+      const rect = btn.getBoundingClientRect();
+      x = rect.left + rect.width / 2;
+      y = rect.top + rect.height / 2;
+    }
+
+    // Calculate the max radius to cover the entire viewport
+    const maxRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = (document as any).startViewTransition(() => {
+      flushSync(() => setTheme(targetTheme));
+    });
+
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${maxRadius}px at ${x}px ${y}px)`,
+          ],
+        },
+        {
+          duration: 600,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          pseudoElement: '::view-transition-new(root)',
+        }
+      );
+    });
+  };
 
   useEffect(() => {
     localStorage.setItem('theme', theme);
@@ -169,7 +217,7 @@ export default function App() {
     if (isDarkOrder || isLightOrder) {
       setIsTyping(true);
       const targetTheme = isDarkOrder ? 'dark' : 'light';
-      setTheme(targetTheme);
+      toggleThemeWithAnimation(targetTheme);
 
       const userMsg: ChatMessage = {
         id: Date.now().toString(),
@@ -270,7 +318,7 @@ export default function App() {
 
   return (
     <ReactLenis root>
-      <div className={`min-h-screen relative flex flex-col font-sans transition-colors duration-500 ${theme === 'dark'
+      <div className={`min-h-screen relative flex flex-col font-sans ${theme === 'dark'
         ? 'bg-black text-slate-100'
         : viewState === 'chat' ? 'bg-white text-slate-800' : 'bg-[#FDFDFD] text-slate-800'
         }`}>
@@ -341,7 +389,8 @@ export default function App() {
 
           <div className="flex-1 flex justify-end items-center gap-2.5 pointer-events-auto">
             <button
-              onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
+              ref={themeToggleRef}
+              onClick={() => toggleThemeWithAnimation()}
               className={`p-2.5 rounded-full transition-colors border border-transparent backdrop-blur-xl cursor-pointer ${theme === 'dark'
                 ? 'hover:bg-white/5 hover:border-zinc-800 text-amber-400'
                 : 'hover:bg-black/5 hover:border-slate-200 text-slate-655'

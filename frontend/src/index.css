@@ -15,7 +15,6 @@ body {
   background-color: var(--color-background);
   color: #1A1A1A;
   font-family: var(--font-sans);
-  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 body.dark {
@@ -78,4 +77,19 @@ body.dark {
 
 .landing-title {
   animation: shimmer-gradient 6s ease-in-out infinite;
+}
+
+/* ── View Transition: circular theme reveal ── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
 }
