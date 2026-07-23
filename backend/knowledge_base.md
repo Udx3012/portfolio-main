@@ -149,4 +149,4 @@ It was inspired by a real-world campus problem: student circles spreading fake n
 Maester is an interactive GoT companion that is currently under development. Work is ongoing on the timeline-hierarchy engine and conversational AI features.
 
 ### Q5: Is there a resume link available?
-Yes, you can check out Udayjot's background and projects by clicking the Github button or visiting his profile link at the top-left of the landing page.
+Yes, you can view and download Udayjot's resume directly via the Resume button on the top-left of the landing page or through his Google Drive link: `https://drive.google.com/file/d/119sHoFDxV8cR2PTVxTXJpT7qMkAtXpHQ/view?usp=sharing`.
