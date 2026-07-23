@@ -31,13 +31,13 @@ export const projectsData: Project[] = [
   {
     id: "9",
     category: "P2P Ephemeral Chat & File Sharing CLI",
-    title: "fsociety",
-    thumbnail: "/assets/projects/fsociety-thumb.png",
+    title: "CipherLink",
+    thumbnail: "/assets/projects/cipherlink-thumb.png",
     fallbackThumbnail: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=600&auto=format&fit=crop",
     description: "A secure, ephemeral, end-to-end encrypted peer-to-peer chat and instant file-streaming terminal application built in pure Rust. Features zero-upload file streaming in 64KB chunks to bypass cloud storage, ephemeral X25519 DH handshakes for perfect forward secrecy, and a cyberpunk terminal UI built with Ratatui.",
     technologies: ["Rust", "P2P Networking", "E2EE Cryptography", "Ratatui (TUI)", "WebSockets", "ChaCha20Poly1305"],
     links: [
-      { label: "GitHub Repository", url: "https://github.com/Udx3012/fsociety" }
+      { label: "GitHub Repository", url: "https://github.com/Udx3012/CipherLink" }
     ],
     screenshots: [],
     fallbackScreenshots: [

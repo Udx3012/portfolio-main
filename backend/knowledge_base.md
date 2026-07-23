@@ -88,11 +88,11 @@ This is the official, comprehensive grounding database for Udayjot Singh. It con
 *   **Links**:
 *       GitHub: `https://github.com/Udx3012/RepoGPT`
 
-### 9. fsociety (Secure E2EE P2P Chat & File Streaming TUI)
+### 9. CipherLink (Secure E2EE P2P Chat & File Streaming TUI)
 *   **Description**: A secure, ephemeral, end-to-end encrypted peer-to-peer chat and instant file-sharing CLI application built in pure Rust. Uses ephemeral X25519 Diffie-Hellman handshake for perfect forward secrecy, ChaCha20Poly1305 for symmetric encryption, and streams files in 256KB chunks to bypass cloud storage. Built with a cyberpunk terminal interface using Ratatui.
 *   **Technologies**: Rust, P2P, E2EE, X25519, ChaCha20Poly1305, Ratatui (TUI), WebSockets
 *   **Links**:
-*       GitHub: `https://github.com/Udx3012/fsociety`
+*       GitHub: `https://github.com/Udx3012/CipherLink`
 
 ---
 
