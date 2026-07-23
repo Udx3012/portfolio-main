@@ -105,7 +105,7 @@ This is the official, comprehensive grounding database for Udayjot Singh. It con
 *   **Key Contributions**: Worked on development and deployment of college ERP features, transitioning a complex student project into a live production system used actively by the university.
 
 ### 2. HalftoneMotion (Boutique Motion Design Studio)
-*   **Period**: Jan 2026 - current (Ongoing)
+*   **Period**: Jun 2026 - current (Ongoing)
 *   **Role**: Co-founder
 *   **Website**: [halftonemotion.vercel.app](https://halftonemotion.vercel.app)
 *   **Details**: Co-founder of [HalftoneMotion](https://halftonemotion.vercel.app), a boutique motion design studio specializing in high-impact product ad creatives.

@@ -16,7 +16,7 @@ export const experienceData: Experience[] = [
     period: "2026 - current",
     company: "HalftoneMotion",
     role: "Co-founder",
-    startMonth: "Jan 2026",
+    startMonth: "Jun 2026",
     endMonth: "current",
     ongoing: true,
     link: "https://halftonemotion.vercel.app",
