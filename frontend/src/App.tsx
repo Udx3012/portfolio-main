@@ -205,6 +205,14 @@ export default function App() {
     };
   }, [selectedProject]);
 
+  // Warm up Render backend on page load to eliminate cold start delays on first query
+  useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    fetch(`${apiUrl}/`).catch(() => {
+      // Ignore background ping errors (silently fail if offline)
+    });
+  }, []);
+
   const handleQuery = async (query: string, typeHint: string = 'general') => {
     if (viewState === 'landing') {
       setViewState('chat');
