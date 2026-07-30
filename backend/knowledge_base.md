@@ -7,7 +7,7 @@ This is the official, comprehensive grounding database for Udayjot Singh. It con
 ## 1. Professional Profile
 *   **Role**: AI Developer / Full-Stack Engineer
 *   **Location**: Delhi, India
-*   **Education**: Third-year B.Tech student in Artificial Intelligence & Machine Learning (AI & ML) at Vivekananda Institute of Professional Studies (VIPS), Delhi.
+*   **Education**: Final-year B.Tech student in Artificial Intelligence & Machine Learning (AI & ML) at Vivekananda Institute of Professional Studies (VIPS), Delhi.
 *   **Backstory & Philosophy**: Udayjot has a habit of turning ideas into shipped products rather than letting them sit as concepts. His interest in technology started early when he represented Delhi as one of only two students selected for the global 6th International Olympiad of Metropolises in Russia. He possesses a genuine curiosity for how systems work (and break), extending into AI agents, full-stack development, and cybersecurity.
 *   **Hobbies & Beyond the Code**:
     *   **Creative**: Video/photo editing (After Effects, Premiere Pro, Photoshop).

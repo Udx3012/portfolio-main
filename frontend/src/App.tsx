@@ -951,7 +951,7 @@ function MeProfile({ theme }: { theme?: string }) {
 
         <p className={`leading-relaxed mb-6 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-700'}`}>
           Hey 👋<br />
-          I'm a third-year B.Tech student in AI & ML at VIPS, Delhi, with a habit of turning ideas into shipped products rather than letting them sit as concepts. My interest in tech started early — I represented Delhi as one of two students selected for the 6th International Olympiad of Metropolises.
+          I'm a final-year B.Tech student in AI & ML at VIPS, Delhi, with a habit of turning ideas into shipped products rather than letting them sit as concepts. My interest in tech started early — I represented Delhi as one of two students selected for the 6th International Olympiad of Metropolises.
         </p>
 
         <div className="flex flex-wrap gap-2">
