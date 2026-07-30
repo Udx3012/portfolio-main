@@ -8,6 +8,8 @@ export interface Experience {
   ongoing: boolean;
   bullets: string[];
   link?: string;
+  location?: string;
+  summary?: string;
 }
 
 export const experienceData: Experience[] = [
@@ -67,15 +69,18 @@ export const experienceData: Experience[] = [
   },
   {
     id: "5",
-    role: "Selected Delegate",
-    company: "6th International Olympiad of Metropolises",
     period: "11th Grade",
+    company: "6th International Olympiad of Metropolises",
+    role: "Selected Delegate",
+    startMonth: "Sep 2021",
+    endMonth: "Sep 2021",
+    ongoing: false,
     location: "Moscow, Russia",
     summary: "Represented Delhi on a global stage in computer science and problem-solving competition.",
-    highlights: [
+    bullets: [
       "Represented Delhi as one of only two students selected for the global 6th International Olympiad of Metropolises in Russia during 11th grade.",
       "Competed in high-level algorithmic problem-solving and computer science challenges against international teams.",
       "Collaborated with top-tier student developers and mentors from major global tech hubs."
-    ],
+    ]
   }
 ];
