@@ -67,15 +67,15 @@ export const experienceData: Experience[] = [
   },
   {
     id: "5",
-    period: "2021-22",
-    company: "6th Moscow Olympiad",
-    role: "Selected Delhi Delegate",
-    startMonth: "Sep 2021",
-    endMonth: "Dec 2022",
-    ongoing: false,
-    bullets: [
-      "Represented Delhi as one of only two students selected for the global 6th Moscow Olympiad in Russia during 11th grade.",
-      "Collaborated on advanced math and science competitions at an international level."
-    ]
+    role: "Selected Delegate",
+    company: "6th International Olympiad of Metropolises",
+    period: "11th Grade",
+    location: "Moscow, Russia",
+    summary: "Represented Delhi on a global stage in computer science and problem-solving competition.",
+    highlights: [
+      "Represented Delhi as one of only two students selected for the global 6th International Olympiad of Metropolises in Russia during 11th grade.",
+      "Competed in high-level algorithmic problem-solving and computer science challenges against international teams.",
+      "Collaborated with top-tier student developers and mentors from major global tech hubs."
+    ],
   }
 ];

@@ -8,7 +8,7 @@ This is the official, comprehensive grounding database for Udayjot Singh. It con
 *   **Role**: AI Developer / Full-Stack Engineer
 *   **Location**: Delhi, India
 *   **Education**: Third-year B.Tech student in Artificial Intelligence & Machine Learning (AI & ML) at Vivekananda Institute of Professional Studies (VIPS), Delhi.
-*   **Backstory & Philosophy**: Udayjot has a habit of turning ideas into shipped products rather than letting them sit as concepts. His interest in technology started early when he represented Delhi as one of only two students selected for the global 6th Moscow Olympiad in Russia. He possesses a genuine curiosity for how systems work (and break), extending into AI agents, full-stack development, and cybersecurity.
+*   **Backstory & Philosophy**: Udayjot has a habit of turning ideas into shipped products rather than letting them sit as concepts. His interest in technology started early when he represented Delhi as one of only two students selected for the global 6th International Olympiad of Metropolises in Russia. He possesses a genuine curiosity for how systems work (and break), extending into AI agents, full-stack development, and cybersecurity.
 *   **Hobbies & Beyond the Code**:
     *   **Creative**: Video/photo editing (After Effects, Premiere Pro, Photoshop).
     *   **Sports**: Football (Won the West Zone Inter-School Football League, recognized as the team's top player).
@@ -120,7 +120,7 @@ This is the official, comprehensive grounding database for Udayjot Singh. It con
 *   **Role**: Web Developer
 *   **Details**: Built and shipped the company website, handling end-to-end frontend development for several major project pages.
 
-### 5. 6th Moscow Olympiad - Selected Delegate
+### 5. 6th International Olympiad of Metropolises - Selected Delegate
 *   **Period**: Sep 2021 - Dec 2022 (Completed)
 *   **Details**: Selected as one of only two students representing Delhi for this global olympiad in Russia during 11th grade.
 

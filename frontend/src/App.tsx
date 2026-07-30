@@ -458,7 +458,9 @@ function LandingView({ onQuery, theme }: { onQuery: (q: string, t: ChatMessage['
   const [isFocused, setIsFocused] = useState(false);
   const dynamicPlaceholder = useTypewriterPlaceholder([
     "Ask me anything...",
-    "Ask me about Maester...",
+    "Ask me about Cited.ai...",
+    "Ask me about RepoGPT...",
+    "Ask me about CipherLink...",
     "What is Udayjot's tech stack?",
     "Tell me about your experience at GeeksforGeeks...",
     "Show me your projects...",
@@ -643,7 +645,9 @@ function ChatView({
   const activeMessage = history[activeIndex];
   const dynamicPlaceholder = useTypewriterPlaceholder([
     "Ask me anything...",
-    "Ask me about Maester...",
+    "Ask me about Cited.ai...",
+    "Ask me about RepoGPT...",
+    "Ask me about CipherLink...",
     "What is Udayjot's tech stack?",
     "Tell me about your experience at GeeksforGeeks...",
     "Show me your projects...",
@@ -947,13 +951,17 @@ function MeProfile({ theme }: { theme?: string }) {
 
         <p className={`leading-relaxed mb-6 transition-colors duration-500 ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-700'}`}>
           Hey 👋<br />
-          I'm a third-year B.Tech student in AI & ML at VIPS, Delhi, with a habit of turning ideas into shipped products rather than letting them sit as concepts. My interest in tech started early — I represented Delhi as one of two students selected for the 6th Moscow Olympiad.
+          I'm a third-year B.Tech student in AI & ML at VIPS, Delhi, with a habit of turning ideas into shipped products rather than letting them sit as concepts. My interest in tech started early — I represented Delhi as one of two students selected for the 6th International Olympiad of Metropolises.
         </p>
 
         <div className="flex flex-wrap gap-2">
-          <span className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-[13px] font-normal shadow-sm">AI Agents</span>
-          <span className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-[13px] font-normal shadow-sm">Next.js</span>
-          <span className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-[13px] font-normal shadow-sm">React</span>
+          <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-[12px] font-medium shadow-sm">Python</span>
+          <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-[12px] font-medium shadow-sm">TypeScript</span>
+          <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-[12px] font-medium shadow-sm">React</span>
+          <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-[12px] font-medium shadow-sm">Next.js</span>
+          <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-[12px] font-medium shadow-sm">FastAPI</span>
+          <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-[12px] font-medium shadow-sm">Rust</span>
+          <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-[12px] font-medium shadow-sm">RAG / LLMs</span>
         </div>
       </div>
     </div>
