@@ -28,12 +28,12 @@ app.add_middleware(
 # Make sure GROQ_API_KEY is in your .env file
 groq_api_key = os.getenv("GROQ_API_KEY")
 client = Groq(api_key=groq_api_key) if groq_api_key else None
-groq_model_name = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+groq_model_name = os.getenv("GROQ_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
 
 # Initialize Gemini client
 gemini_api_key = os.getenv("GEMINI_API_KEY")
 gemini_client = genai.Client(api_key=gemini_api_key) if gemini_api_key else None
-gemini_model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+gemini_model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
 class ChatMessageModel(BaseModel):
     role: str
