@@ -15,7 +15,7 @@ export interface Experience {
 export const experienceData: Experience[] = [
   {
     id: "2",
-    period: "2026 - current",
+    period: "Jun 2026 - Present",
     company: "HalftoneMotion",
     role: "Co-founder",
     startMonth: "Jun 2026",
@@ -23,64 +23,66 @@ export const experienceData: Experience[] = [
     ongoing: true,
     link: "https://halftonemotion.vercel.app",
     bullets: [
-      "Co-founded and scaling HalftoneMotion, a boutique motion design studio specializing in high-impact product ad creatives.",
-      "Primarily responsible for motion graphics, After Effects composition, and Premiere Pro production for promotional campaigns."
+      "Co-founded and scaled a motion design studio serving 30+ international partners, overseeing business strategy, client acquisition, and internal ops.",
+      "Engineered a standardized end-to-end creative delivery pipeline (concept → storyboard → render → delivery) sustaining fast project turnaround times.",
+      "Maintained exceptionally high client retention and satisfaction by establishing structured revision cycles and transparent client communication."
     ]
   },
   {
     id: "4",
     period: "Aug 2025",
     company: "Citadel Coworkers LLP",
-    role: "Web Developer",
+    role: "Web Development Intern",
     startMonth: "Aug 2025",
     endMonth: "Aug 2025",
     ongoing: false,
+    location: "Noida, India (Hybrid)",
     bullets: [
-      "Built and shipped the complete corporate website.",
-      "Handled end-to-end frontend development for several major product and project landing pages."
+      "Rebuilt a legacy corporate web platform end-to-end into a modern, responsive, and modular site adhering to high accessibility, SEO, and best practice standards.",
+      "Owned the full delivery lifecycle from UI design through frontend implementation to production deployment within a cross-functional team."
     ]
   },
   {
     id: "1",
-    period: "2025 - current",
+    period: "Aug 2025 - Present",
     company: "VIPS (Vivekananda Institute of Professional Studies)",
-    role: "Core Contributor - CLEIT ERP System",
-    startMonth: "Jan 2025",
+    role: "Core Team Member - CLEIT ERP System",
+    startMonth: "Aug 2025",
     endMonth: "current",
     ongoing: true,
+    link: "https://cdc.cleit.in",
     bullets: [
-      "Core contributor to CLEIT, a full-scale ERP system built by a cross-year student team.",
-      "Officially adopted by the college for active administrative and academic operations, serving as a live system rather than a side project."
+      "Core developer contributing to CLEIT, a full-scale institutional ERP platform built by a cross-year student engineering team.",
+      "Engineered and deployed core administrative modules officially adopted and actively used in production across the university."
     ]
   },
   {
     id: "3",
     period: "Aug - Dec 2024",
     company: "GeeksforGeeks",
-    role: "Content Managing Intern",
+    role: "Video Creator Intern",
     startMonth: "Aug 2024",
     endMonth: "Dec 2024",
     ongoing: false,
+    location: "Delhi, India (Remote)",
     bullets: [
-      "Interned at one of India's largest developer education platforms.",
-      "Managed and scheduled technical blog assignments.",
-      "Scripted, filmed, and produced educational explainer videos for assigned content and pushed final edits live."
+      "Scripted and produced high-quality technical explainer content covering Machine Learning, Data Science, Data Structures & Algorithms, and Java for developer audiences.",
+      "Managed the full end-to-end video production cycle from concept through final cut and publication."
     ]
   },
   {
     id: "5",
-    period: "11th Grade",
+    period: "Selected Delegate",
     company: "6th International Olympiad of Metropolises",
-    role: "Selected Delegate",
-    startMonth: "Sep 2021",
-    endMonth: "Sep 2021",
+    role: "Delegate representing India",
+    startMonth: "2021",
+    endMonth: "2021",
     ongoing: false,
     location: "Moscow, Russia",
     summary: "Represented Delhi on a global stage in computer science and problem-solving competition.",
     bullets: [
-      "Represented Delhi as one of only two students selected for the global 6th International Olympiad of Metropolises in Russia during 11th grade.",
-      "Competed in high-level algorithmic problem-solving and computer science challenges against international teams.",
-      "Collaborated with top-tier student developers and mentors from major global tech hubs."
+      "Selected as one of only two delegates from Delhi to represent India at the global 6th International Olympiad of Metropolises in Moscow.",
+      "Competed in high-level algorithmic problem solving and computer science challenges alongside top international student developers."
     ]
   }
 ];

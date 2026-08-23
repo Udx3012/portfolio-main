@@ -18,8 +18,8 @@ export const projectsData: Project[] = [
     title: "Cited.ai",
     thumbnail: "/assets/projects/cited-thumb.png",
     fallbackThumbnail: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=600&auto=format&fit=crop",
-    description: "A domain-agnostic, document-grounded Question-Answering system (RAG) designed to run entirely on free-tier cloud services. It processes uploaded PDFs, indexes them into a vector store using hybrid dense-sparse search, and answers questions strictly based on the content of the documents with inline citations back to the source chunks. Features LLM-as-a-Judge verification for zero hallucinations.",
-    technologies: ["FastAPI", "Next.js", "Qdrant Cloud", "Supabase Storage", "Groq API", "Hugging Face", "TypeScript", "Python"],
+    description: "A citation-backed document Q&A platform built with FastAPI, Next.js, and Qdrant Cloud. Designed so every generated response strictly traces back to verifiable source passages. Combines BM25 keyword search with dense vector retrieval via Reciprocal Rank Fusion and cross-encoder reranking to capture exact technical terms and semantic meaning, paired with an automated LLM-as-a-Judge layer for factual verification.",
+    technologies: ["FastAPI", "Next.js", "Qdrant Cloud", "Python", "TypeScript", "Hybrid Search", "LLM Evaluation"],
     links: [
       { label: "GitHub Repository", url: "https://github.com/Udx3012/Cited.ai" }
     ],
@@ -34,8 +34,8 @@ export const projectsData: Project[] = [
     title: "CipherLink",
     thumbnail: "/assets/projects/cipherlink-thumb.png",
     fallbackThumbnail: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=600&auto=format&fit=crop",
-    description: "A secure, ephemeral, end-to-end encrypted peer-to-peer chat and instant file-streaming terminal application built in pure Rust. Features zero-upload file streaming in 64KB chunks to bypass cloud storage, ephemeral X25519 DH handshakes for perfect forward secrecy, and a cyberpunk terminal UI built with Ratatui.",
-    technologies: ["Rust", "P2P Networking", "E2EE Cryptography", "Ratatui (TUI)", "WebSockets", "ChaCha20Poly1305"],
+    description: "An ephemeral peer-to-peer messaging and instant file-sharing platform engineered in Rust with zero server-side storage. Features X25519 Diffie-Hellman key exchange, ChaCha20-Poly1305 authenticated encryption, and RAM zeroization on session teardown to guarantee forward secrecy. Includes a high-throughput chunked file streaming pipeline and a responsive Ratatui terminal UI.",
+    technologies: ["Rust", "P2P Networking", "Cryptography", "X25519", "ChaCha20Poly1305", "Ratatui (TUI)", "Async I/O"],
     links: [
       { label: "GitHub Repository", url: "https://github.com/Udx3012/CipherLink" }
     ],
@@ -50,7 +50,7 @@ export const projectsData: Project[] = [
     title: "CommentSeed",
     thumbnail: "/assets/projects/commentseed-thumb.png",
     fallbackThumbnail: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600&auto=format&fit=crop",
-    description: "An AI-powered social comment generator for short-form video content on TikTok, Instagram, and YouTube. Produces a batch of realistic, human-sounding engagement comments across five voice archetypes (Hype, Witty, Curious, Skeptical, Wholesome) using parallel Groq API fan-out calls and custom realism post-processing to strip AI-like patterns.",
+    description: "An AI-powered social comment generator for short-form video content on TikTok, Instagram, and YouTube. Produces realistic, human-sounding engagement comments across five voice archetypes using parallel LLM API calls and custom realism post-processing to strip AI-like text patterns.",
     technologies: ["Next.js 15", "TypeScript", "Tailwind CSS v4", "shadcn/ui", "Framer Motion", "Groq API"],
     links: [
       { label: "GitHub Repository", url: "https://github.com/Udx3012/CommentSeed" }
@@ -66,7 +66,7 @@ export const projectsData: Project[] = [
     title: "Creator Intelligence",
     thumbnail: "/assets/projects/creator-intel-thumb.png",
     fallbackThumbnail: "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=600&auto=format&fit=crop",
-    description: "The Next-Gen v2 evolution of CommentSeed into a full-spectrum AI platform for content creators. Beyond comment generation, it adds AI-powered caption writing, hook generation, creative content briefs, and platform-native tone calibration across TikTok, YouTube, Instagram, and X.",
+    description: "The Next-Gen evolution of CommentSeed into a full-spectrum AI platform for content creators. Integrates caption generation, hook writing, creative content briefs, and platform-native tone calibration across TikTok, YouTube, Instagram, and X.",
     technologies: ["Next.js 15", "TypeScript", "Tailwind CSS v4", "shadcn/ui", "Framer Motion", "Groq API"],
     links: [
       { label: "Currently Down", url: "" }
@@ -82,7 +82,7 @@ export const projectsData: Project[] = [
     title: "Reframe",
     thumbnail: "/assets/projects/reframe-thumb.png",
     fallbackThumbnail: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=600&auto=format&fit=crop",
-    description: "A creative video brief automation tool built by HalftoneMotion. Instead of manual note-taking, users paste a YouTube URL or upload a video file, and Reframe transcribes and analyzes it using Gemini and YouTube APIs, returning a comprehensive, structured creative brief instantly.",
+    description: "A creative video brief automation tool built by HalftoneMotion. Users paste a video link or upload media, and Reframe transcribes and analyzes content using Gemini and YouTube APIs, instantly generating a structured creative brief.",
     technologies: ["Next.js", "Gemini API", "YouTube API", "TypeScript", "Tailwind CSS"],
     links: [
       { label: "GitHub Repository", url: "https://github.com/Udx3012/Reframe" }
@@ -94,12 +94,12 @@ export const projectsData: Project[] = [
   },
   {
     id: "8",
-    category: "Codebase Intelligence",
+    category: "Codebase Intelligence Assistant",
     title: "RepoGPT",
     thumbnail: "/assets/projects/repogpt-thumb.png",
     fallbackThumbnail: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=600&auto=format&fit=crop",
-    description: "A production-grade codebase intelligence assistant that allows you to chat with any GitHub repository in real-time. Features a double-mode ingest, AST-like structure-aware code chunking to preserve context, a dual vector-store strategy (Supabase and Pinecone), and highly accurate, code-rich Gemini-powered explanations.",
-    technologies: ["React 19", "Vite", "Node.js", "Express", "Google Gemini", "Supabase", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    description: "An AI-powered repository assistant enabling natural language queries across large GitHub codebases. Features an AST-aware chunking pipeline that splits code along function and class boundaries to preserve context, grounded hybrid vector search, and a background indexing worker that processes extensive source repositories without blocking the query path.",
+    technologies: ["React 19", "Node.js", "Express", "Google Gemini", "Pinecone", "TypeScript", "Tailwind CSS", "AST Chunking"],
     links: [
       { label: "GitHub Repository", url: "https://github.com/Udx3012/RepoGPT" }
     ],

@@ -18,7 +18,7 @@ export const skillsData: SkillCategory[] = [
     title: "Programming Languages",
     description: "Fluent in multiple languages for software, script, and app development.",
     icon: "Code",
-    skills: ["C", "C++", "Java", "JavaScript", "TypeScript", "Dart"],
+    skills: ["Python", "Rust", "TypeScript", "JavaScript", "C", "C++", "Go", "Java", "Dart", "SQL"],
     color: "bg-slate-50 border-slate-100 text-slate-700"
   },
   {
