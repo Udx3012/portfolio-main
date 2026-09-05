@@ -1,6 +1,7 @@
 import os
 import json
 import re
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -12,8 +13,13 @@ from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(__file__), ".env")
 load_dotenv(dotenv_path=env_path)
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Preload system prompt and initialize clients on startup
+    load_system_prompt()
+    yield
 
-app = FastAPI(title="AI Portfolio Brain")
+app = FastAPI(title="AI Portfolio Brain", lifespan=lifespan)
 
 # Enable CORS for the frontend
 app.add_middleware(
@@ -28,7 +34,7 @@ app.add_middleware(
 # Make sure GROQ_API_KEY is in your .env file
 groq_api_key = os.getenv("GROQ_API_KEY")
 client = Groq(api_key=groq_api_key) if groq_api_key else None
-groq_model_name = os.getenv("GROQ_MODEL", "qwen/qwen3.6-27b")
+groq_model_name = os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b")
 
 # Initialize Gemini client
 gemini_api_key = os.getenv("GEMINI_API_KEY")
@@ -90,15 +96,28 @@ Rules:
 - CRITICAL Punctuation Rule: Always write English contractions with proper apostrophes (e.g. use "I've", "I'm", "don't", "it's", "you're", "we've", "they're"). NEVER write them as "Ive", "Im", "dont", "its" (unless possessive), "youre", "weve", "theyre".
 """
 
-def get_system_prompt() -> str:
+_cached_system_prompt: str | None = None
+
+def load_system_prompt() -> str:
+    global _cached_system_prompt
     try:
         kb_path = os.path.join(os.path.dirname(__file__), "knowledge_base.md")
         with open(kb_path, "r", encoding="utf-8") as f:
             kb_content = f.read()
-        return BASE_SYSTEM_PROMPT.format(knowledge_base=kb_content)
+        _cached_system_prompt = BASE_SYSTEM_PROMPT.format(knowledge_base=kb_content)
     except Exception as e:
         print(f"Error loading knowledge base: {e}")
-        return BASE_SYSTEM_PROMPT.format(knowledge_base="Knowledge base file not found.")
+        _cached_system_prompt = BASE_SYSTEM_PROMPT.format(knowledge_base="Knowledge base file not found.")
+    return _cached_system_prompt
+
+# Preload system prompt into memory on module load
+load_system_prompt()
+
+def get_system_prompt() -> str:
+    global _cached_system_prompt
+    if _cached_system_prompt is None:
+        return load_system_prompt()
+    return _cached_system_prompt
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatRequest):
