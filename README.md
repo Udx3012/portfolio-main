@@ -2,7 +2,7 @@
 
 An interactive, responsive portfolio website that operates as an **AI-powered personal agent**, dynamically adapting to answer questions about my work, skills, and background. 
 
-Instead of a static PDF or traditional layout, this application acts as a conversational dashboard. Powered by a **FastAPI backend** and **Llama 3 (via Groq)**, it reads verified facts in real time and automatically embeds interactive visual UI widgets (project carousels, experience timelines, and skill grids) directly into the conversation stream to show recruiters exactly what they ask for.
+Instead of a static PDF or traditional layout, this application acts as a conversational dashboard. Powered by a **FastAPI backend** and **Qwen 3.8 27B (via Groq)** with automated fallback to **Gemini 2.5 Flash**, it reads verified facts in real time and automatically embeds interactive visual UI widgets (project carousels, experience timelines, and skill grids) directly into the conversation stream to show recruiters exactly what they ask for.
 
 ---
 
@@ -23,7 +23,7 @@ Here is how the portfolio looks in action:
 
 ## System Flow
 
-The diagram below shows how visitor queries route through the grounded Llama 3 engine and trigger visual dashboard widgets dynamically:
+The diagram below shows how visitor queries route through the grounded Qwen 3.8 engine and trigger visual dashboard widgets dynamically:
 
 ```mermaid
 graph TD
@@ -43,7 +43,7 @@ graph TD
     %% Server Request
     B -->|POST /api/chat| C[FastAPI Server]:::server
     C -->|Reads Verified Biography & Projects| D[(knowledge_base.md)]:::data
-    C -->|Sends Contextual Prompt| E[Groq Llama 3.3 Engine]:::server
+    C -->|Sends Contextual Prompt| E[Groq Qwen 3.8 Engine]:::server
     E -->|Returns JSON with Intent & AI Text| C
     
     %% Processing and Dispatching
@@ -68,7 +68,7 @@ graph TD
 - **Contextual Threading**: Features conversational follow-up memory, allowing visitors to ask natural questions like *"What projects did you build?"* followed by *"What is the tech stack of the first one?"*.
 
 ### 2. Semantic Intent-Driven UI Dispatcher
-- The Llama 3 engine parses visitor questions and returns a structured JSON payload categorizing the user's intent.
+- The Qwen 3.8 engine parses visitor questions and returns a structured JSON payload categorizing the user's intent.
 - The frontend dynamically routes this intent, embedding full-featured interactive React widgets (such as a project carousel, job timeline, or skills list) directly in-line with the conversational response.
 
 ### 3. Interactive Experience Timeline
@@ -133,9 +133,12 @@ To run this project locally, follow the steps below:
    pip install -r requirements.txt
    pip install watchfiles
    ```
-4. Create a `.env` file in the `backend/` directory and add your API key:
+4. Create a `.env` file in the `backend/` directory and configure your keys:
    ```env
    GROQ_API_KEY=your_groq_api_key_here
+   GROQ_MODEL=qwen/qwen3.8-27b
+   GEMINI_API_KEY=your_gemini_api_key_here
+   GEMINI_MODEL=gemini-2.5-flash
    ```
 5. Start the FastAPI server:
    ```bash
